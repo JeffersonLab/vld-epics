@@ -23,7 +23,7 @@ VLD_SRCS += drvVLD.c
 VLD_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 # Where to find jvme + supported libraries/headers
-USR_INCLUDES_Linux += ${LINUXVME_INC}
+USR_INCLUDES += -I${LINUXVME_INC}
 VLD_LDFLAGS += -L${LINUXVME_LIB} -ljvme -lvld
 
 
