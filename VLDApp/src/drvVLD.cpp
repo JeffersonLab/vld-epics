@@ -11,6 +11,9 @@ extern "C"
 
 static const char *driverName = "VLD";
 
+#define firmwareVersionString "Firmware Version" /* asynInt32 r/o */
+#define slotNumberString      "Slot Number"      /* asynInt32 r/o */
+
 #define triggerDelayString      "Trigger Delay"        /* asynInt32 r/w */
 #define triggerDelayStepString  "Trigger Delay Step"        /* asynInt32 r/w */
 #define triggerWidthString      "Trigger Width"        /* asynInt32 r/w */
@@ -34,7 +37,6 @@ static const char *driverName = "VLD";
 
 #define periodicPulserPeriodString "Periodic Pulser Period" /* asynInt32 r/w */
 #define periodicPulserNumberString "Periodic Pulser Number" /* asynInt32 r/w */
-#define periodicPulserEnableString "Periodic Pulser Enable" /* asynInt32 r/w */
 
 #define triggerCountString "Trigger Count" /* asynInt32 r/o */
 
@@ -53,6 +55,9 @@ public:
   virtual asynStatus getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high);
 
 protected:
+  int32_t P_firmwareVersion;
+  int32_t P_slotNumber;
+
   int32_t P_triggerDelay;
   int32_t P_triggerDelayStep;
   int32_t P_triggerWidth;
@@ -76,12 +81,14 @@ protected:
 
   int32_t P_periodicPulserPeriod;
   int32_t P_periodicPulserNumber;
-  int32_t P_periodicPulserEnable;
 
   int32_t P_triggerCount;
 
 private:
   int32_t P_boardNum;
+  uint32_t P_slotmask;
+
+  int32_t addr2slot(uint32_t addr);
 
 };
 
@@ -95,6 +102,9 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 		   ASYN_CANBLOCK, 1,
 		   0, 0)
 {
+  createParam(firmwareVersionString, asynParamInt32, &P_firmwareVersion);
+  createParam(slotNumberString, asynParamInt32, &P_slotNumber);
+
   createParam(triggerDelayString, asynParamInt32, &P_triggerDelay);
   createParam(triggerDelayStepString, asynParamInt32, &P_triggerDelayStep);
   createParam(triggerWidthString, asynParamInt32, &P_triggerWidth);
@@ -118,7 +128,6 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 
   createParam(periodicPulserPeriodString, asynParamInt32, &P_periodicPulserPeriod);
   createParam(periodicPulserNumberString, asynParamInt32, &P_periodicPulserNumber);
-  createParam(periodicPulserEnableString, asynParamInt32, &P_periodicPulserEnable);
 
   createParam(triggerCountString, asynParamInt32, &P_triggerCount);
 
@@ -126,6 +135,29 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 
   /* Init VLD here */
   vldInit(vme_addr, vme_incr, nincr, iFlag);
+
+  P_slotmask = vldSlotMask();
+
+}
+
+int32_t
+VLD::addr2slot(uint32_t addr)
+{
+  int32_t slot = 0, rval = 0;
+
+  /*
+    Here we assume the address is related to the slot number:
+      A24 = slot << 19;
+  */
+  slot = addr >> 19;
+
+  /* Check if this slot has been initialized */
+  if(P_slotmask & (1 << slot))
+    rval = slot;
+  else
+    rval = -1;
+
+  return rval;
 }
 
 asynStatus
@@ -193,8 +225,21 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   static const char *functionName = "readInt32";
 
   this->getAddress(pasynUser, &addr);
+  id = addr2slot(addr);
 
-  if((function == P_triggerDelay) || (function == P_triggerWidth) || (function == P_triggerDelayStep))
+  if(function == P_firmwareVersion)
+    {
+      uint32_t fw = 0;
+      vmeBusLock();
+      status = vldGetFirmwareVersion(id, &fw);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_firmwareVersion, fw);
+      *value = fw;
+
+    }
+
+  else if((function == P_triggerDelay) || (function == P_triggerWidth) || (function == P_triggerDelayStep))
     {
       int32_t delay = 0, delayStep = 0, width = 0;
       vmeBusLock();
@@ -226,6 +271,103 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
       *value = trigSrc;
 
     }
+
+  else if (function == P_clockSource)
+    {
+      uint32_t clkSrc = 0;
+      vmeBusLock();
+      status = vldGetClockSource(id, &clkSrc);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_clockSource, (epicsInt32) clkSrc);
+      *value = clkSrc;
+    }
+#ifdef NOT_YET_DEFINED
+  else if ((function == P_ledConnector) || (function == P_ledLoChanMask) ||
+	   (function == P_ledHiChanMask) || (function == P_ledLDO) ||
+	   (function == P_ledEnable))
+    {
+      uint32_t ledConnector = 0, ledLoChanMask = 0, ledHiChanMask = 0, ledLDO = 0, ledEnable = 0;
+      vmeBusLock();
+      status = ;
+      vmeBusUnlock();
+
+      //....
+
+    }
+#endif
+  else if ((function == P_bleachTime) || (function == P_bleachTimerEnable))
+    {
+      uint32_t timer = 0, enable = 0;
+      vmeBusLock();
+      status = vldGetBleachTime(id, &timer, &enable);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_bleachTime, timer);
+      setIntegerParam(addr, P_bleachTimerEnable, enable);
+
+      if(function == P_bleachTime)
+	*value = timer;
+      else if (function == P_bleachTimerEnable)
+	*value = enable;
+
+    }
+
+  else if (function == P_calibrationPulserWidth)
+    {
+      uint32_t pulsewidth = 0;
+      vmeBusLock();
+      status = vldGetCalibrationPulseWidth(id, &pulsewidth);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_calibrationPulserWidth, pulsewidth);
+      *value = pulsewidth;
+    }
+
+  else if ((function == P_randomPulserPrescale) || (function == P_randomPulserEnable))
+    {
+      uint32_t prescale = 0, enable = 0;
+      vmeBusLock();
+      status = vldGetRandomPulser(id, &prescale, &enable);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_randomPulserPrescale, prescale);
+      setIntegerParam(addr, P_randomPulserEnable, enable);
+
+      if (function == P_randomPulserPrescale)
+	*value = prescale;
+      else if (function == P_randomPulserEnable)
+	*value = enable;
+    }
+
+  else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserNumber))
+    {
+      uint32_t period = 0, number = 0;
+      vmeBusLock();
+      status = vldGetPeriodicPulser(id, &period, &number);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_periodicPulserPeriod, period);
+      setIntegerParam(addr, P_periodicPulserNumber, number);
+
+      if (function == P_periodicPulserPeriod)
+	*value = period;
+      else if (function == P_periodicPulserNumber)
+	*value = number;
+
+    }
+
+  else if (function == P_triggerCount)
+    {
+      uint32_t trigcnt = 0;
+      vmeBusLock();
+      status = vldGetTriggerCount(id, &trigcnt);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_triggerCount, trigcnt);
+      *value = trigcnt;
+    }
+
   else
     {
       // Other functions we call the base class method
