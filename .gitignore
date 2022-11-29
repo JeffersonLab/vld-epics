@@ -1,0 +1,17 @@
+# emacs temp
+*~
+
+# preq
+*.d
+*.d.*
+
+# objects
+*.o
+
+# libraries
+*.so
+*.a
+
+# epics compilation directories
+O.*
+
