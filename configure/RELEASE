@@ -1,5 +1,7 @@
 # RELEASE - Location of external support modules
 
+ASYN = /daqfs/apps/epics/R3-15-git/support/asyn
+
 # EPICS_BASE should appear last so earlier modules can override stuff:
 EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 
