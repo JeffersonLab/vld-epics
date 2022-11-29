@@ -14,6 +14,7 @@ VLD_DBD += base.dbd
 
 # VLD_registerRecordDeviceDriver.cpp will be created from VLD.dbd
 VLD_SRCS += VLD_registerRecordDeviceDriver.cpp
+VLD_SRCS_DEFAULT += drvVLD.cpp
 VLD_SRCS_DEFAULT += VLDMain.cpp
 VLD_SRCS_vxWorks += -nil-
 
