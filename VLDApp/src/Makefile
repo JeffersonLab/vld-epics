@@ -9,8 +9,8 @@ include $(TOP)/configure/CONFIG
 PROD_IOC = VLD
 # VLD.dbd will be created and installed
 DBD += VLD.dbd
+DBD += VLDSupport.dbd
 
-VLD_DBD += base.dbd
 
 # VLD_registerRecordDeviceDriver.cpp will be created from VLD.dbd
 VLD_SRCS += VLD_registerRecordDeviceDriver.cpp
