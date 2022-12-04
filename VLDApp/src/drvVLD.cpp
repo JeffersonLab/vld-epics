@@ -14,8 +14,8 @@ extern "C"
  */
 VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t nincr, uint32_t iFlag)
   : asynPortDriver(portName, MAX_SIGNALS, //NUM_PARAMS, deprecated
-		   asynInt32Mask | asynFloat64Mask | asynDrvUserMask,
-		   0,
+		   asynInt32Mask | asynInt32ArrayMask | asynDrvUserMask,
+		   asynInt32Mask | asynInt32ArrayMask | asynDrvUserMask,
 		   ASYN_CANBLOCK | ASYN_MULTIDEVICE, 1,
 		   0, 0)
 {

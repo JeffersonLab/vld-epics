@@ -15,7 +15,7 @@ static const char *driverName = "VLD";
 #define clockSourceString       "ClockSource"         /* asynInt32 r/w */
 
 #define VLD_CONNECTOR_NUM 5
-#define connectorString  ":Connector"
+#define connectorString  ":C"
 #define loChanMaskString "LowChannelMask"  /* asynInt32 r/w */
 #define hiChanMaskString "HighChannelMask" /* asynInt32 r/w */
 #define LDOString        "LDOCurrentSetting"   /* asynInt32 r/w */
