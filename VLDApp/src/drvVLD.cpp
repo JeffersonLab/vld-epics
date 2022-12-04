@@ -1,5 +1,4 @@
 #include <iocsh.h>
-#include <asynPortDriver.h>
 
 extern "C"
 {
@@ -8,89 +7,7 @@ extern "C"
 }
 
 #include <epicsExport.h>
-
-static const char *driverName = "VLD";
-
-#define firmwareVersionString "Firmware Version" /* asynInt32 r/o */
-#define slotNumberString      "Slot Number"      /* asynInt32 r/o */
-
-#define triggerDelayString      "Trigger Delay"        /* asynInt32 r/w */
-#define triggerDelayStepString  "Trigger Delay Step"        /* asynInt32 r/w */
-#define triggerWidthString      "Trigger Width"        /* asynInt32 r/w */
-#define triggerSourceMaskString "Trigger Source Mask"   /* asynInt32 r/w */
-
-#define clockSourceString       "ClockSource"         /* asynInt32 r/w */
-
-#define ledConnectorString  "LED Connector"         /* asynInt32 r/w */
-#define ledLoChanMaskString "LED Low Channel Mask"  /* asynInt32 r/w */
-#define ledHiChanMaskString "LED High Channel Mask" /* asynInt32 r/w */
-#define ledLDOString        "LED Current Setting"   /* asynInt32 r/w */
-#define ledEnableString     "LED Enable"            /* asynInt32 r/w */
-
-#define bleachTimeString        "Bleach Time"                /* asynInt32 r/w */
-#define bleachTimerEnableString "Bleach Timer Enable"        /* asynInt32 r/w */
-
-#define calibrationPulseWidthString "Calibration Pulse Width" /* asynInt32 r/w */
-
-#define randomPulserPrescaleString "Random Pulser Prescale" /* asynInt32 r/w */
-#define randomPulserEnableString   "Random Pulser Enable"   /* asynInt32 r/w */
-
-#define periodicPulserPeriodString "Periodic Pulser Period" /* asynInt32 r/w */
-#define periodicPulserNumberString "Periodic Pulser Number" /* asynInt32 r/w */
-
-#define triggerCountString "Trigger Count" /* asynInt32 r/o */
-
-
-#define MAX_SIGNALS 40
-
-/** Class definition for the VLD class
- */
-class VLD : public asynPortDriver {
-
-public:
-  VLD(const char *portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t nincr, uint32_t iFlag);
-
-  virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
-  virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-  virtual asynStatus getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high);
-
-protected:
-  int32_t P_firmwareVersion;
-  int32_t P_slotNumber;
-
-  int32_t P_triggerDelay;
-  int32_t P_triggerDelayStep;
-  int32_t P_triggerWidth;
-  int32_t P_triggerSourceMask;
-
-  int32_t P_clockSource;
-
-  int32_t P_ledConnector;
-  int32_t P_ledLoChanMask;
-  int32_t P_ledHiChanMask;
-  int32_t P_ledLDO;
-  int32_t P_ledEnable;
-
-  int32_t P_bleachTime;
-  int32_t P_bleachTimerEnable;
-
-  int32_t P_calibrationPulserWidth;
-
-  int32_t P_randomPulserPrescale;
-  int32_t P_randomPulserEnable;
-
-  int32_t P_periodicPulserPeriod;
-  int32_t P_periodicPulserNumber;
-
-  int32_t P_triggerCount;
-
-private:
-  int32_t P_boardNum;
-  uint32_t P_slotmask;
-
-  int32_t addr2slot(uint32_t addr);
-
-};
+#include "drvVLD.hh"
 
 /** Constructor for the VLD class
  * The only instantiation is done by the IOC at startup
