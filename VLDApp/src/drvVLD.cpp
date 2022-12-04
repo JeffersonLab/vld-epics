@@ -16,10 +16,11 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   : asynPortDriver(portName, MAX_SIGNALS, //NUM_PARAMS, deprecated
 		   asynInt32Mask | asynFloat64Mask | asynDrvUserMask,
 		   0,
-		   ASYN_CANBLOCK, 1,
+		   ASYN_CANBLOCK | ASYN_MULTIDEVICE, 1,
 		   0, 0)
 {
   createParam(firmwareVersionString, asynParamInt32, &P_firmwareVersion);
+  createParam(boardIDString, asynParamInt32, &P_boardID);
   createParam(slotNumberString, asynParamInt32, &P_slotNumber);
 
   createParam(triggerDelayString, asynParamInt32, &P_triggerDelay);
@@ -29,11 +30,21 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 
   createParam(clockSourceString, asynParamInt32, &P_clockSource);
 
-  createParam(ledConnectorString, asynParamInt32, &P_ledConnector);
-  createParam(ledLoChanMaskString, asynParamInt32, &P_ledLoChanMask);
-  createParam(ledHiChanMaskString, asynParamInt32, &P_ledHiChanMask);
-  createParam(ledLDOString, asynParamInt32, &P_ledLDO);
-  createParam(ledEnableString, asynParamInt32, &P_ledEnable);
+  for(int32_t iconn = 0; iconn < VLD_CONNECTOR_NUM; iconn++)
+    {
+      char tmpStr[100];
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, loChanMaskString);
+      createParam(tmpStr, asynParamInt32, &P_loChanMask[iconn]);
+
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, hiChanMaskString);
+      createParam(tmpStr, asynParamInt32, &P_hiChanMask[iconn]);
+
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, LDOString);
+      createParam(tmpStr, asynParamInt32, &P_LDO[iconn]);
+
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, LDOEnableString);
+      createParam(tmpStr, asynParamInt32, &P_LDOEnable[iconn]);
+    }
 
   createParam(bleachTimeString, asynParamInt32, &P_bleachTime);
   createParam(bleachTimerEnableString, asynParamInt32, &P_bleachTimerEnable);
@@ -87,7 +98,7 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
   if(function == P_triggerDelay)
     *high = 0xffffffff;
 
-  if(function == P_triggerDelayStep)
+  else if(function == P_triggerDelayStep)
     *high = 0xffffffff;
 
   else if(function == P_triggerWidth)
@@ -99,17 +110,17 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
   else if(function == P_clockSource)
     *high = 0xffffffff;
 
-  else if(function == P_ledConnector)
+  else if((function >= P_LDO[0]) && (function <=P_LDO[VLD_CONNECTOR_NUM]))
     *high = 0xffffffff;
 
-  else if(function == P_ledLoChanMask)
+  else if((function >= P_LDOEnable[0]) && (function <=P_LDOEnable[VLD_CONNECTOR_NUM]))
     *high = 0xffffffff;
 
-  else if(function == P_ledHiChanMask)
-    *high = 0xffffffff;
+  else if((function >= P_loChanMask[0]) && (function <=P_loChanMask[VLD_CONNECTOR_NUM]))
+    *high = 0x3fffff;
 
-  else if(function == P_ledLDO)
-    *high = 0xffffffff;
+  else if((function >= P_hiChanMask[0]) && (function <=P_hiChanMask[VLD_CONNECTOR_NUM]))
+    *high = 0x3fffff;
 
   else if(function == P_bleachTime)
     *high = 0xffffffff;
@@ -156,6 +167,17 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 
     }
 
+  if(function == P_boardID)
+    {
+      uint32_t boardID = 0;
+      vmeBusLock();
+      status = vldGetBoardID(id, &boardID);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_boardID, boardID);
+      *value = boardID;
+
+    }
   else if((function == P_triggerDelay) || (function == P_triggerWidth) || (function == P_triggerDelayStep))
     {
       int32_t delay = 0, delayStep = 0, width = 0;
