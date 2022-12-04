@@ -88,10 +88,60 @@ VLD::addr2slot(uint32_t addr)
   return rval;
 }
 
+bool
+VLD::isConnectorFunction(int32_t function,
+			 int32_t &connector,
+			 bool &isLoMask, bool &isHiMask, bool &isLDO, bool &isLDOEnable)
+{
+  /* initialize returned values */
+  connector = -1;
+  isLoMask = false;
+  isHiMask = false;
+  isLDO = false;
+  isLDOEnable = false;
+
+  for(int32_t iconn = 0; iconn < VLD_CONNECTOR_NUM; iconn++)
+    {
+      /* Check the lo mask */
+      if(function == P_loChanMask[iconn])
+	{
+	  connector = iconn;
+	  isLoMask = true;
+	  return true;
+	}
+
+      /* Check the hi mask */
+      if(function == P_hiChanMask[iconn])
+	{
+	  connector = iconn;
+	  isHiMask = true;
+	  return true;
+	}
+
+      /* Check the LDO */
+      if(function == P_LDO[iconn])
+	{
+	  connector = iconn;
+	  isLDO = true;
+	  return true;
+	}
+
+      /* Check the LDOEnable */
+      if(function == P_LDO[iconn])
+	{
+	  connector = iconn;
+	  isLDOEnable = true;
+	  return true;
+	}
+    }
+
+  return false;
+}
+
 asynStatus
 VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
 {
-  int function = pasynUser->reason;
+  int32_t function = pasynUser->reason;
 
   *low = 0;
 
@@ -148,9 +198,11 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 {
   int id = 0;
   int addr;
-  int function = pasynUser->reason;
+  int32_t function = pasynUser->reason;
   int status=0;
   static const char *functionName = "readInt32";
+  int32_t connector = 0;
+  bool isLoMask = false, isHiMask = false, isLDO = false, isLDOEnable = false;
 
   this->getAddress(pasynUser, &addr);
   id = addr2slot(addr);
@@ -221,20 +273,41 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
       setIntegerParam(addr, P_clockSource, (epicsInt32) clkSrc);
       *value = clkSrc;
     }
-#ifdef NOT_YET_DEFINED
-  else if ((function == P_ledConnector) || (function == P_ledLoChanMask) ||
-	   (function == P_ledHiChanMask) || (function == P_ledLDO) ||
-	   (function == P_ledEnable))
+
+  else if (isConnectorFunction(function, connector, isLoMask, isHiMask, isLDO, isLDOEnable))
     {
-      uint32_t ledConnector = 0, ledLoChanMask = 0, ledHiChanMask = 0, ledLDO = 0, ledEnable = 0;
       vmeBusLock();
-      status = ;
+      if(isLoMask || isHiMask)
+	{
+	  uint32_t loChanEnableMask = 0, hiChanEnableMask = 0;
+	  status = vldGetChannelMask(id, connector, &loChanEnableMask, &hiChanEnableMask);
+
+	  setIntegerParam(addr, P_loChanMask[connector], (epicsInt32) loChanEnableMask);
+	  setIntegerParam(addr, P_hiChanMask[connector], (epicsInt32) hiChanEnableMask);
+
+	  if(isLoMask)
+	    *value = loChanEnableMask;
+
+	  if(isHiMask)
+	    *value = hiChanEnableMask;
+	}
+
+      if(isLDO || isLDOEnable)
+	{
+	  uint32_t ctrlLDO = 0, enableLDO = 0;
+	  status = vldGetBleachCurrent(id, connector, &ctrlLDO, &enableLDO);
+
+	  setIntegerParam(addr, P_LDO[connector], (epicsInt32) ctrlLDO);
+	  setIntegerParam(addr, P_LDOEnable[connector], (epicsInt32) enableLDO);
+
+	  if(isLDO)
+	    *value = ctrlLDO;
+
+	  if(isLDOEnable)
+	    *value = enableLDO;
+	}
       vmeBusUnlock();
-
-      //....
-
     }
-#endif
   else if ((function == P_bleachTime) || (function == P_bleachTimerEnable))
     {
       uint32_t timer = 0, enable = 0;
@@ -329,7 +402,16 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   callParamCallbacks(addr);
   return (status==0) ? asynSuccess : asynError;
 }
+asynStatus
+VLD::writeInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements)
+{
+  int32_t status = 0;
 
+  // Other functions we call the base class method
+  status = asynPortDriver::writeInt32Array(pasynUser, value, nElements);
+
+  return (status==0) ? asynSuccess : asynError;
+}
 asynStatus
 VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 {

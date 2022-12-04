@@ -14,8 +14,8 @@ static const char *driverName = "VLD";
 
 #define clockSourceString       "ClockSource"         /* asynInt32 r/w */
 
-#define connectorString  "Connector"
 #define VLD_CONNECTOR_NUM 5
+#define connectorString  ":Connector"
 #define loChanMaskString "LowChannelMask"  /* asynInt32 r/w */
 #define hiChanMaskString "HighChannelMask" /* asynInt32 r/w */
 #define LDOString        "LDOCurrentSetting"   /* asynInt32 r/w */
@@ -45,6 +45,7 @@ public:
   VLD(const char *portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t nincr, uint32_t iFlag);
 
   virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
+  virtual asynStatus writeInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements);
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
   virtual asynStatus getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high);
 
@@ -83,5 +84,7 @@ private:
   uint32_t P_slotmask;
 
   int32_t addr2slot(uint32_t addr);
-
+  bool    isConnectorFunction(int32_t function,
+			      int32_t &connector,
+			      bool &isLoMask, bool &isHiMask, bool &isLDO, bool &isLDOEnable);
 };
