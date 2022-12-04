@@ -219,7 +219,7 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 
     }
 
-  if(function == P_boardID)
+  else if(function == P_boardID)
     {
       uint32_t boardID = 0;
       vmeBusLock();
@@ -420,8 +420,13 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
   int function = pasynUser->reason;
   int status=0;
   static const char *functionName = "writeInt32";
+  int32_t connector = 0;
+  bool isLoMask = false, isHiMask = false, isLDO = false, isLDOEnable = false;
 
   this->getAddress(pasynUser, &addr);
+
+  /* Set it now, may overwrite it later */
+  setIntegerParam(addr, function, value);
 
   if((function == P_triggerDelay) || (function == P_triggerWidth) || (function == P_triggerDelayStep))
     {
@@ -440,6 +445,127 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
       vmeBusLock();
       status = vldSetTriggerDelayWidth(id, delay, delayStep, width);
+      vmeBusUnlock();
+
+    }
+  else if (function == P_triggerSourceMask)
+    {
+      uint32_t trigSrc = value;
+
+      vmeBusLock();
+      status = vldSetTriggerSourceMask(id, trigSrc);
+      vmeBusUnlock();
+
+    }
+
+  else if (function == P_clockSource)
+    {
+      uint32_t clkSrc = value;
+
+      vmeBusLock();
+      status = vldSetClockSource(id, clkSrc);
+      vmeBusUnlock();
+
+    }
+
+  else if (isConnectorFunction(function, connector, isLoMask, isHiMask, isLDO, isLDOEnable))
+    {
+      if(isLoMask || isHiMask)
+	{
+	  uint32_t loChanEnableMask = 0, hiChanEnableMask = 0;
+	  getIntegerParam(addr, P_loChanMask[connector], (epicsInt32 *)&loChanEnableMask);
+	  getIntegerParam(addr, P_hiChanMask[connector], (epicsInt32 *)&hiChanEnableMask);
+
+	  if(isLoMask)
+	    loChanEnableMask = value;
+
+	  if(isHiMask)
+	    hiChanEnableMask = value;
+
+	  vmeBusLock();
+	  status = vldSetChannelMask(id, connector, loChanEnableMask, hiChanEnableMask);
+	  vmeBusUnlock();
+
+	}
+
+      if(isLDO || isLDOEnable)
+	{
+	  uint32_t ctrlLDO = 0, enableLDO = 0;
+	  getIntegerParam(addr, P_LDO[connector], (epicsInt32 *)&ctrlLDO);
+	  getIntegerParam(addr, P_LDOEnable[connector], (epicsInt32 *)&enableLDO);
+
+	  if(isLDO)
+	    ctrlLDO = value;
+
+	  if(isLDOEnable)
+	    enableLDO = value;
+
+	  vmeBusLock();
+	  status = vldSetBleachCurrent(id, connector, ctrlLDO, enableLDO);
+	  vmeBusUnlock();
+
+	}
+    }
+
+  else if ((function == P_bleachTime) || (function == P_bleachTimerEnable))
+    {
+      uint32_t timer = 0, enable = 0;
+      getIntegerParam(addr, P_bleachTime, (epicsInt32 *)&timer);
+      getIntegerParam(addr, P_bleachTimerEnable, (epicsInt32 *)&enable);
+
+      if(function == P_bleachTime)
+	timer = value;
+      else if (function == P_bleachTimerEnable)
+	enable = value;
+
+      vmeBusLock();
+      status = vldSetBleachTime(id, timer, enable);
+      vmeBusUnlock();
+
+    }
+
+  else if (function == P_calibrationPulserWidth)
+    {
+      uint32_t pulsewidth = value;
+
+      vmeBusLock();
+      status = vldGetCalibrationPulseWidth(id, &pulsewidth);
+      vmeBusUnlock();
+
+    }
+
+  else if ((function == P_randomPulserPrescale) || (function == P_randomPulserEnable))
+    {
+      uint32_t prescale = 0, enable = 0;
+
+      getIntegerParam(addr, P_randomPulserPrescale, (epicsInt32 *)&prescale);
+      getIntegerParam(addr, P_randomPulserEnable, (epicsInt32 *)&enable);
+
+      if (function == P_randomPulserPrescale)
+	prescale = value;
+      else if (function == P_randomPulserEnable)
+	enable = value;
+
+      vmeBusLock();
+      status = vldSetRandomPulser(id, prescale, enable);
+      vmeBusUnlock();
+
+    }
+
+  else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserNumber))
+    {
+      uint32_t period = 0, number = 0;
+
+      getIntegerParam(addr, P_periodicPulserPeriod, (epicsInt32 *)&period);
+      getIntegerParam(addr, P_periodicPulserNumber, (epicsInt32 *)&number);
+
+      if (function == P_periodicPulserPeriod)
+	period = value;
+      else if (function == P_periodicPulserNumber)
+	number = value;
+
+      vmeBusLock();
+      status = vldSetPeriodicPulser(id, period, number);
       vmeBusUnlock();
 
     }
