@@ -1,0 +1,4 @@
+epicsEnvSet("IOC","ioc")
+epicsEnvSet("TOP","/daqfs/home/moffit/work/vld-epics")
+epicsEnvSet("ASYN","/daqfs/apps/epics/R3-15-git/support/asyn")
+epicsEnvSet("EPICS_BASE","/daqfs/apps/epics/R3-15-git/base")
