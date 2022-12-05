@@ -1,0 +1,58 @@
+=vld-epics= is an EPICS IOC/library for the =VLD=
+
+* Install Prereqs
+
+** jvme (must be done on OS with gefvme RPM installed)
+- set ~LINUXVME~ environment variables and install =jvme= library (e.g. bash)
+  #+begin_src shell
+    export LINUXVME=${HOME}/linuxvme
+    export LINUXVME_INC=${LINUXVME}/include
+    export LINUXVME_LIB=${LINUXVME}/Linux-x86_64/lib
+
+    mkdir -p ${LINUXVME_INC}
+    mkdir -p ${LINUXVME_LIB}
+
+    cd ${LINUXVME}
+    git clone https://github.com/JeffersonLab/jvme.git
+    cd jvme
+    make install
+  #+end_src
+
+** VLD
+- install VLD library
+  #+begin_src shell
+    cd ${LINUXVME}
+    git clone https://github.com/JeffersonLab/vld.git
+
+    cd vld
+    make install
+  #+end_src
+
+* Install + configure =vld-epics=
+- Clone the repo
+ #+begin_src shell
+    
+   git clone https://github.com/JeffersonLab/vld-epics.git
+
+ #+end_src
+
+- Modify =configure/RELEASE= with the paths for your system, e.g.
+  #+begin_src Makefile
+ASYN = /daqfs/apps/epics/R3-15-git/support/asyn
+EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
+  #+end_src
+
+- Create a =substitutions= file to match your crate configuration.  Example is =VLD-daqlab.substitutions=
+- build the IOC
+  #+begin_src shell
+    cd vld-epics
+
+    make
+  #+end_src  
+- modify the st.cmd to use your substitutions file:
+  #+begin_src shell
+        epicsEnvSet("PORT", "daqlab")
+        # ...
+        # ...
+        dbLoadTemplate($(TOP)/db/"VLD-$(PORT).substitutions","P=$(PORT),PORT=$(PORT)")
+  #+end_src
