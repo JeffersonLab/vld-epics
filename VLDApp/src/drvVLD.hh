@@ -5,7 +5,6 @@ static const char *driverName = "VLD";
 
 #define firmwareVersionString "FirmwareVersion" /* asynInt32 r/o */
 #define boardIDString         "ModuleID" /* asynInt32 r/o */
-#define slotNumberString      "SlotNumber"      /* asynInt32 r/o */
 
 #define triggerDelayString      "TriggerDelay"        /* asynInt32 r/w */
 #define triggerDelayStepString  "TriggerDelayStep"        /* asynInt32 r/w */
@@ -52,7 +51,6 @@ public:
 protected:
   int32_t P_firmwareVersion;
   int32_t P_boardID;
-  int32_t P_slotNumber;
 
   int32_t P_triggerDelay;
   int32_t P_triggerDelayStep;

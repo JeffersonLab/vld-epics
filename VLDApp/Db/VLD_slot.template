@@ -19,14 +19,6 @@ record(longin, "$(P)$(R)ModuleID") {
   field(INP, "@asyn($(PORT),$(ADDR))ModuleID")
 }
 
-record(longin, "$(P)$(R)SlotNumber") {
-  field(DESC, "Module Identification")
-  field(SCAN, "Passive")
-  field(PINI, "YES")
-  field(DTYP, "asynInt32")
-  field(INP, "@asyn($(PORT),$(ADDR))SlotNumber")
-}
-
 record(longin, "$(P)$(R)TriggerCount") {
   field(DESC, "Trigger Count")
   field(SCAN, "Passive")
@@ -38,7 +30,7 @@ record(longin, "$(P)$(R)TriggerCount") {
 record(longout, "$(P)$(R)ClockSource") {
   field(DESC, "Clock Source")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))ClockSource")
 }
@@ -46,7 +38,7 @@ record(longout, "$(P)$(R)ClockSource") {
 record(longout, "$(P)$(R)TriggerDelay") {
   field(DESC, "Trigger Delay")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))TriggerDelay")
 }
@@ -54,7 +46,7 @@ record(longout, "$(P)$(R)TriggerDelay") {
 record(longout, "$(P)$(R)TriggerDelayStep") {
   field(DESC, "Trigger Delay Step Size")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))TriggerDelayStep")
 }
@@ -62,7 +54,7 @@ record(longout, "$(P)$(R)TriggerDelayStep") {
 record(longout, "$(P)$(R)TriggerWidth") {
   field(DESC, "Trigger Width")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))TriggerWidth")
 }
@@ -70,7 +62,7 @@ record(longout, "$(P)$(R)TriggerWidth") {
 record(longout, "$(P)$(R)TriggerSourceMask") {
   field(DESC, "Trigger Source Mask")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))TriggerSourceMask")
 }
@@ -78,7 +70,7 @@ record(longout, "$(P)$(R)TriggerSourceMask") {
 record(longout, "$(P)$(R)BleachTime") {
   field(DESC, "Bleach Timer Setting")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))BleachTime")
 }
@@ -86,7 +78,7 @@ record(longout, "$(P)$(R)BleachTime") {
 record(longout, "$(P)$(R)BleachTimerEnable") {
   field(DESC, "Bleach Timer Enable")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))BleachTimerEnable")
 }
@@ -94,7 +86,7 @@ record(longout, "$(P)$(R)BleachTimerEnable") {
 record(longout, "$(P)$(R)CalibrationPulseWidth") {
   field(DESC, "Calibration Pulse Width")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))CalibrationPulseWidth")
 }
@@ -102,7 +94,7 @@ record(longout, "$(P)$(R)CalibrationPulseWidth") {
 record(longout, "$(P)$(R)RandomPulserPrescale") {
   field(DESC, "Random Pulser Prescale")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))RandomPulserPrescale")
 }
@@ -110,7 +102,7 @@ record(longout, "$(P)$(R)RandomPulserPrescale") {
 record(longout, "$(P)$(R)RandomPulserEnable") {
   field(DESC, "Random Pulser Enable")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))RandomPulserEnable")
 }
@@ -118,7 +110,7 @@ record(longout, "$(P)$(R)RandomPulserEnable") {
 record(longout, "$(P)$(R)PeriodicPulserPeriod") {
   field(DESC, "Periodic Pulser Period")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriod")
 }
@@ -126,102 +118,102 @@ record(longout, "$(P)$(R)PeriodicPulserPeriod") {
 record(longout, "$(P)$(R)PeriodicPulserNumber") {
   field(DESC, "Periodic Pulser Number")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))PeriodicPulserNumber")
 }
 
-record(longin, "$(P)$(R)ClockSource.RB") {
+record(longin, "$(P)$(R)ClockSource_RB") {
   field(DESC, "Clock Source")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))ClockSource")
 }
 
-record(longin, "$(P)$(R)TriggerDelay.RB") {
+record(longin, "$(P)$(R)TriggerDelay_RB") {
   field(DESC, "Trigger Delay")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))TriggerDelay")
 }
 
-record(longin, "$(P)$(R)TriggerDelayStep.RB") {
+record(longin, "$(P)$(R)TriggerDelayStep_RB") {
   field(DESC, "Trigger Delay Step Size")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))TriggerDelayStep")
 }
 
-record(longin, "$(P)$(R)TriggerWidth.RB") {
+record(longin, "$(P)$(R)TriggerWidth_RB") {
   field(DESC, "Trigger Width")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))TriggerWidth")
 }
 
-record(longin, "$(P)$(R)TriggerSourceMask.RB") {
+record(longin, "$(P)$(R)TriggerSourceMask_RB") {
   field(DESC, "Trigger Source Mask")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))TriggerSourceMask")
 }
 
-record(longin, "$(P)$(R)BleachTime.RB") {
+record(longin, "$(P)$(R)BleachTime_RB") {
   field(DESC, "Bleach Timer Setting")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))BleachTime")
 }
 
-record(longin, "$(P)$(R)BleachTimerEnable.RB") {
+record(longin, "$(P)$(R)BleachTimerEnable_RB") {
   field(DESC, "Bleach Timer Enable")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))BleachTimerEnable")
 }
 
-record(longin, "$(P)$(R)CalibrationPulseWidth.RB") {
+record(longin, "$(P)$(R)CalibrationPulseWidth_RB") {
   field(DESC, "Calibration Pulse Width")
-  field(SCAN, "Passive")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))CalibrationPulseWidth")
+  field(SCAN, "I/O Intr")
 }
 
-record(longin, "$(P)$(R)RandomPulserPrescale.RB") {
+record(longin, "$(P)$(R)RandomPulserPrescale_RB") {
   field(DESC, "Random Pulser Prescale")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))RandomPulserPrescale")
 }
 
-record(longin, "$(P)$(R)RandomPulserEnable.RB") {
+record(longin, "$(P)$(R)RandomPulserEnable_RB") {
   field(DESC, "Random Pulser Enable")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))RandomPulserEnable")
 }
 
-record(longin, "$(P)$(R)PeriodicPulserPeriod.RB") {
+record(longin, "$(P)$(R)PeriodicPulserPeriod_RB") {
   field(DESC, "Periodic Pulser Period")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriod")
 }
 
-record(longin, "$(P)$(R)PeriodicPulserNumber.RB") {
+record(longin, "$(P)$(R)PeriodicPulserNumber_RB") {
   field(DESC, "Periodic Pulser Number")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))PeriodicPulserNumber")
@@ -231,7 +223,6 @@ record(longin, "$(P)$(R)PeriodicPulserNumber.RB") {
 #! View(0,0,1.0)
 #! Record("$(P)$(R)FirmwareVersion",20,14,0,0,"$(P)$(R)FirmwareVersion")
 #! Record("$(P)$(R)ModuleID",260,14,0,0,"$(P)$(R)ModuleID")
-#! Record("$(P)$(R)SlotNumber",500,14,0,0,"$(P)$(R)SlotNumber")
 #! Record("$(P)$(R)TriggerCount",740,14,0,0,"$(P)$(R)TriggerCount")
 #! Record("$(P)$(R)ClockSource",980,14,0,0,"$(P)$(R)ClockSource")
 #! Record("$(P)$(R)TriggerDelay",1220,14,0,0,"$(P)$(R)TriggerDelay")
@@ -245,15 +236,15 @@ record(longin, "$(P)$(R)PeriodicPulserNumber.RB") {
 #! Record("$(P)$(R)RandomPulserEnable",3140,14,0,0,"$(P)$(R)RandomPulserEnable")
 #! Record("$(P)$(R)PeriodicPulserPeriod",3380,14,0,0,"$(P)$(R)PeriodicPulserPeriod")
 #! Record("$(P)$(R)PeriodicPulserNumber",3620,14,0,0,"$(P)$(R)PeriodicPulserNumber")
-#! Record("$(P)$(R)ClockSource.RB",3860,14,0,0,"$(P)$(R)ClockSource.RB")
-#! Record("$(P)$(R)TriggerDelay.RB",4100,14,0,0,"$(P)$(R)TriggerDelay.RB")
-#! Record("$(P)$(R)TriggerDelayStep.RB",4340,14,0,0,"$(P)$(R)TriggerDelayStep.RB")
-#! Record("$(P)$(R)TriggerWidth.RB",4580,14,0,0,"$(P)$(R)TriggerWidth.RB")
-#! Record("$(P)$(R)TriggerSourceMask.RB",20,374,0,0,"$(P)$(R)TriggerSourceMask.RB")
-#! Record("$(P)$(R)BleachTime.RB",260,374,0,0,"$(P)$(R)BleachTime.RB")
-#! Record("$(P)$(R)BleachTimerEnable.RB",500,374,0,0,"$(P)$(R)BleachTimerEnable.RB")
-#! Record("$(P)$(R)CalibrationPulseWidth.RB",740,374,0,0,"$(P)$(R)CalibrationPulseWidth.RB")
-#! Record("$(P)$(R)RandomPulserPrescale.RB",980,374,0,0,"$(P)$(R)RandomPulserPrescale.RB")
-#! Record("$(P)$(R)RandomPulserEnable.RB",1220,374,0,0,"$(P)$(R)RandomPulserEnable.RB")
-#! Record("$(P)$(R)PeriodicPulserPeriod.RB",1460,374,0,0,"$(P)$(R)PeriodicPulserPeriod.RB")
-#! Record("$(P)$(R)PeriodicPulserNumber.RB",1700,374,0,0,"$(P)$(R)PeriodicPulserNumber.RB")
+#! Record("$(P)$(R)ClockSource_RB",3860,14,0,0,"$(P)$(R)ClockSource_RB")
+#! Record("$(P)$(R)TriggerDelay_RB",4100,14,0,0,"$(P)$(R)TriggerDelay_RB")
+#! Record("$(P)$(R)TriggerDelayStep_RB",4340,14,0,0,"$(P)$(R)TriggerDelayStep_RB")
+#! Record("$(P)$(R)TriggerWidth_RB",4580,14,0,0,"$(P)$(R)TriggerWidth_RB")
+#! Record("$(P)$(R)TriggerSourceMask_RB",20,374,0,0,"$(P)$(R)TriggerSourceMask_RB")
+#! Record("$(P)$(R)BleachTime_RB",260,374,0,0,"$(P)$(R)BleachTime_RB")
+#! Record("$(P)$(R)BleachTimerEnable_RB",500,374,0,0,"$(P)$(R)BleachTimerEnable_RB")
+#! Record("$(P)$(R)CalibrationPulseWidth_RB",740,374,0,0,"$(P)$(R)CalibrationPulseWidth_RB")
+#! Record("$(P)$(R)RandomPulserPrescale_RB",980,374,0,0,"$(P)$(R)RandomPulserPrescale_RB")
+#! Record("$(P)$(R)RandomPulserEnable_RB",1220,374,0,0,"$(P)$(R)RandomPulserEnable_RB")
+#! Record("$(P)$(R)PeriodicPulserPeriod_RB",1460,374,0,0,"$(P)$(R)PeriodicPulserPeriod_RB")
+#! Record("$(P)$(R)PeriodicPulserNumber_RB",1700,374,0,0,"$(P)$(R)PeriodicPulserNumber_RB")

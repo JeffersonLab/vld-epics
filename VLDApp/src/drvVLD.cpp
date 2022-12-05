@@ -21,7 +21,6 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 {
   createParam(firmwareVersionString, asynParamInt32, &P_firmwareVersion);
   createParam(boardIDString, asynParamInt32, &P_boardID);
-  createParam(slotNumberString, asynParamInt32, &P_slotNumber);
 
   createParam(triggerDelayString, asynParamInt32, &P_triggerDelay);
   createParam(triggerDelayStepString, asynParamInt32, &P_triggerDelayStep);
@@ -33,16 +32,16 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   for(int32_t iconn = 0; iconn < VLD_CONNECTOR_NUM; iconn++)
     {
       char tmpStr[100];
-      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, loChanMaskString);
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn, loChanMaskString);
       createParam(tmpStr, asynParamInt32, &P_loChanMask[iconn]);
 
-      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, hiChanMaskString);
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn, hiChanMaskString);
       createParam(tmpStr, asynParamInt32, &P_hiChanMask[iconn]);
 
-      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, LDOString);
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn, LDOString);
       createParam(tmpStr, asynParamInt32, &P_LDO[iconn]);
 
-      sprintf(tmpStr, "%s%d:%s", connectorString, iconn+1, LDOEnableString);
+      sprintf(tmpStr, "%s%d:%s", connectorString, iconn, LDOEnableString);
       createParam(tmpStr, asynParamInt32, &P_LDOEnable[iconn]);
     }
 
@@ -62,30 +61,20 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   vmeOpenDefaultWindows();
 
   /* Init VLD here */
-  vldInit(vme_addr, vme_incr, nincr, iFlag);
-
-  P_slotmask = vldSlotMask();
+  int32_t status = vldInit(vme_addr, vme_incr, nincr, iFlag);
+  if(status == 0)
+    {
+      setIntegerParam(P_slotmask, vldSlotMask());
+      vldGStatus(1);
+    }
 
 }
 
 int32_t
 VLD::addr2slot(uint32_t addr)
 {
-  int32_t slot = 0, rval = 0;
 
-  /*
-    Here we assume the address is related to the slot number:
-      A24 = slot << 19;
-  */
-  slot = addr >> 19;
-
-  /* Check if this slot has been initialized */
-  if(P_slotmask & (1 << slot))
-    rval = slot;
-  else
-    rval = -1;
-
-  return rval;
+  return addr;
 }
 
 bool
@@ -142,6 +131,7 @@ asynStatus
 VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
 {
   int32_t function = pasynUser->reason;
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "getbounds for function %d", function);
 
   *low = 0;
 
@@ -160,16 +150,16 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
   else if(function == P_clockSource)
     *high = 0xffffffff;
 
-  else if((function >= P_LDO[0]) && (function <=P_LDO[VLD_CONNECTOR_NUM]))
+  else if((function >= P_LDO[0]) && (function <=P_LDO[VLD_CONNECTOR_NUM-1]))
     *high = 0xffffffff;
 
-  else if((function >= P_LDOEnable[0]) && (function <=P_LDOEnable[VLD_CONNECTOR_NUM]))
+  else if((function >= P_LDOEnable[0]) && (function <=P_LDOEnable[VLD_CONNECTOR_NUM-1]))
     *high = 0xffffffff;
 
-  else if((function >= P_loChanMask[0]) && (function <=P_loChanMask[VLD_CONNECTOR_NUM]))
+  else if((function >= P_loChanMask[0]) && (function <=P_loChanMask[VLD_CONNECTOR_NUM-1]))
     *high = 0x3fffff;
 
-  else if((function >= P_hiChanMask[0]) && (function <=P_hiChanMask[VLD_CONNECTOR_NUM]))
+  else if((function >= P_hiChanMask[0]) && (function <=P_hiChanMask[VLD_CONNECTOR_NUM-1]))
     *high = 0x3fffff;
 
   else if(function == P_bleachTime)
@@ -206,6 +196,9 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 
   this->getAddress(pasynUser, &addr);
   id = addr2slot(addr);
+
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "readInt32 for 0x%x function = %d\n", addr, function);
+
 
   if(function == P_firmwareVersion)
     {
@@ -424,6 +417,9 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
   bool isLoMask = false, isHiMask = false, isLDO = false, isLDOEnable = false;
 
   this->getAddress(pasynUser, &addr);
+  id = addr;
+
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "writeInt32 for 0x%x function = %d\n", addr, function);
 
   /* Set it now, may overwrite it later */
   setIntegerParam(addr, function, value);
@@ -529,7 +525,7 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
       uint32_t pulsewidth = value;
 
       vmeBusLock();
-      status = vldGetCalibrationPulseWidth(id, &pulsewidth);
+      status = vldSetCalibrationPulseWidth(id, pulsewidth);
       vmeBusUnlock();
 
     }

@@ -4,71 +4,71 @@
 #! DBDEND
 
 
-record(longout, LowChannelMask) {
+record(longout, "$(P)$(R)C$(CONN):LowChannelMask") {
   field(DESC, "Lower Channels Enable Mask")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
-  field(OUT, "@asyn($(PORT),$(ADDR)):C${CONN}:LowChannelMask")
+  field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):LowChannelMask")
 }
 
 
-record(longout, HighChannelMask) {
+record(longout, "$(P)$(R)C$(CONN):HighChannelMask") {
   field(DESC, "Higher Channels Enable Mask")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
-  field(OUT, "@asyn($(PORT),$(ADDR)):C${CONN}:HighChannelMask")
+  field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):HighChannelMask")
 }
 
-record(longout, LDOCurrentSetting) {
+record(longout, "$(P)$(R)C$(CONN):LDOCurrentSetting") {
   field(DESC, "LDO Current Setting")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
-  field(OUT, "@asyn($(PORT),$(ADDR)):C${CONN}:LDOCurrentSetting")
+  field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOCurrentSetting")
 }
 
-record(longout, LDOEnable) {
+record(longout, "$(P)$(R)C$(CONN):LDOEnable") {
   field(DESC, "LDO Regulator Enable")
   field(SCAN, "Passive")
-  field(PINI, "YES")
+  field(PINI, "NO")
   field(DTYP, "asynInt32")
-  field(OUT, "@asyn($(PORT),$(ADDR)):C${CONN}:LDOEnable")
+  field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOEnable")
 }
 
 
-record(longin, "LowChannelMask.RB") {
+record(longin, "$(P)$(R)C$(CONN):LowChannelMask_RB") {
   field(DESC, "Lower Channels Enable Mask Readback")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
-  field(INP, "@asyn($(PORT),$(ADDR)):C${CONN}:LowChannelMask")
+  field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):LowChannelMask")
 }
 
 
-record(longin, "HighChannelMask.RB") {
+record(longin, "$(P)$(R)C$(CONN):HighChannelMask_RB") {
   field(DESC, "Higher Channels Enable Mask")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
-  field(INP, "@asyn($(PORT),$(ADDR)):C${CONN}:HighChannelMask")
+  field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):HighChannelMask")
 }
 
-record(longin, "LDOCurrentSetting.RB") {
+record(longin, "$(P)$(R)C$(CONN):LDOCurrentSetting_RB") {
   field(DESC, "LDO Current Setting")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
-  field(INP, "@asyn($(PORT),$(ADDR)):C${CONN}:LDOCurrentSetting")
+  field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOCurrentSetting")
 }
 
-record(longin, "LDOEnable.RB") {
+record(longin, "$(P)$(R)C$(CONN):LDOEnable_RB") {
   field(DESC, "LDO Regulator Enable")
-  field(SCAN, "Passive")
+  field(SCAN, "I/O Intr")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
-  field(INP, "@asyn($(PORT),$(ADDR)):C${CONN}:LDOEnable")
+  field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOEnable")
 }
 
 #! Further lines contain data used by VisualDCT
@@ -77,7 +77,7 @@ record(longin, "LDOEnable.RB") {
 #! Record(HighChannelMask,2320,2194,0,1,"HighChannelMask")
 #! Record(LDOCurrentSetting,2100,2354,0,1,"LDOCurrentSetting")
 #! Record(LDOEnable,2320,2354,0,1,"LDOEnable")
-#! Record("LowChannelMask.RB",2580,2194,0,1,"LowChannelMask.RB")
-#! Record("HighChannelMask.RB",2800,2194,0,1,"HighChannelMask.RB")
-#! Record("LDOCurrentSetting.RB",2580,2354,0,1,"LDOCurrentSetting.RB")
-#! Record("LDOEnable.RB",2800,2354,0,1,"LDOEnable.RB")
+#! Record("LowChannelMask_RB",2580,2194,0,1,"LowChannelMask_RB")
+#! Record("HighChannelMask_RB",2800,2194,0,1,"HighChannelMask_RB")
+#! Record("LDOCurrentSetting_RB",2580,2354,0,1,"LDOCurrentSetting_RB")
+#! Record("LDOEnable_RB",2800,2354,0,1,"LDOEnable_RB")
