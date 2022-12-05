@@ -1,0 +1,18 @@
+
+file "${TOP}/db/VLD_slot.template"
+{
+pattern
+{ R,	ADDR}
+{ Slot7:, 7}
+}
+
+file "${TOP}/db/VLD_connector.template"
+{
+pattern
+{ R,   ADDR,   CONN}
+{ Slot7:, 7,  0}
+{ Slot7:, 7,  1}
+{ Slot7:, 7,  2}
+{ Slot7:, 7,  3}
+{ Slot7:, 7,  4}
+}
