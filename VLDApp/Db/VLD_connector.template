@@ -10,8 +10,14 @@ record(longout, "$(P)$(R)C$(CONN):LowChannelMask") {
   field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):LowChannelMask")
+  field(FLNK, "$(P)$(R)C$(CONN):LowChannelMask_RB")
+  field(HIGH, "0x40000")
+  field(LOW, "-1")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+  field(IVOA, "Set output to IVOV")
+  field(IVOV, "0")
 }
-
 
 record(longout, "$(P)$(R)C$(CONN):HighChannelMask") {
   field(DESC, "Higher Channels Enable Mask")
@@ -19,6 +25,13 @@ record(longout, "$(P)$(R)C$(CONN):HighChannelMask") {
   field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):HighChannelMask")
+  field(FLNK, "$(P)$(R)C$(CONN):HighChannelMask_RB")
+  field(HIGH, "0x40000")
+  field(LOW, "-1")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+  field(IVOA, "Set output to IVOV")
+  field(IVOV, "0")
 }
 
 record(longout, "$(P)$(R)C$(CONN):LDOCurrentSetting") {
@@ -27,29 +40,39 @@ record(longout, "$(P)$(R)C$(CONN):LDOCurrentSetting") {
   field(PINI, "NO")
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOCurrentSetting")
+  field(FLNK, "$(P)$(R)C$(CONN):LDOCurrentSetting_RB")
+  field(HIGH, "8")
+  field(LOW, "-1")
+  field(HSV, "INVALID")
+  field(LSV, "INVALID")
+  field(IVOA, "Set output to IVOV")
+  field(IVOV, "0")
 }
 
-record(longout, "$(P)$(R)C$(CONN):LDOEnable") {
+record(bo, "$(P)$(R)C$(CONN):LDOEnable") {
   field(DESC, "LDO Regulator Enable")
   field(SCAN, "Passive")
-  field(PINI, "NO")
+  field(PINI, "YES")
   field(DTYP, "asynInt32")
+  field(FLNK, "$(P)$(R)C$(CONN):LDOEnable_RB")
   field(OUT, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOEnable")
+  field(ZNAM, "Disable")
+  field(ONAM, "Enable")
+  field(IVOA, "Set output to IVOV")
+  field(IVOV, "0")
 }
-
 
 record(longin, "$(P)$(R)C$(CONN):LowChannelMask_RB") {
   field(DESC, "Lower Channels Enable Mask Readback")
-  field(SCAN, "I/O Intr")
+  field(SCAN, "2 second")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):LowChannelMask")
 }
 
-
 record(longin, "$(P)$(R)C$(CONN):HighChannelMask_RB") {
   field(DESC, "Higher Channels Enable Mask")
-  field(SCAN, "I/O Intr")
+  field(SCAN, "2 second")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):HighChannelMask")
@@ -57,27 +80,37 @@ record(longin, "$(P)$(R)C$(CONN):HighChannelMask_RB") {
 
 record(longin, "$(P)$(R)C$(CONN):LDOCurrentSetting_RB") {
   field(DESC, "LDO Current Setting")
-  field(SCAN, "I/O Intr")
+  field(SCAN, "2 second")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOCurrentSetting")
 }
 
-record(longin, "$(P)$(R)C$(CONN):LDOEnable_RB") {
+record(bi, "$(P)$(R)C$(CONN):LDOEnable_RB") {
   field(DESC, "LDO Regulator Enable")
-  field(SCAN, "I/O Intr")
+  field(SCAN, "2 second")
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR)):C$(CONN):LDOEnable")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
 }
 
 #! Further lines contain data used by VisualDCT
-#! View(2000,2115,1.0)
-#! Record(LowChannelMask,2100,2194,0,1,"LowChannelMask")
-#! Record(HighChannelMask,2320,2194,0,1,"HighChannelMask")
-#! Record(LDOCurrentSetting,2100,2354,0,1,"LDOCurrentSetting")
-#! Record(LDOEnable,2320,2354,0,1,"LDOEnable")
-#! Record("LowChannelMask_RB",2580,2194,0,1,"LowChannelMask_RB")
-#! Record("HighChannelMask_RB",2800,2194,0,1,"HighChannelMask_RB")
-#! Record("LDOCurrentSetting_RB",2580,2354,0,1,"LDOCurrentSetting_RB")
-#! Record("LDOEnable_RB",2800,2354,0,1,"LDOEnable_RB")
+#! View(146,0,1.0)
+#! Record("$(P)$(R)C$(CONN):LowChannelMask",160,177,0,0,"$(P)$(R)C$(CONN):LowChannelMask")
+#! Field("$(P)$(R)C$(CONN):LowChannelMask.FLNK",16777215,1,"$(P)$(R)C$(CONN):LowChannelMask.FLNK")
+#! Link("$(P)$(R)C$(CONN):LowChannelMask.FLNK","$(P)$(R)C$(CONN):LowChannelMask_RB")
+#! Record("$(P)$(R)C$(CONN):HighChannelMask",180,-63,0,0,"$(P)$(R)C$(CONN):HighChannelMask")
+#! Field("$(P)$(R)C$(CONN):HighChannelMask.FLNK",16777215,1,"$(P)$(R)C$(CONN):HighChannelMask.FLNK")
+#! Link("$(P)$(R)C$(CONN):HighChannelMask.FLNK","$(P)$(R)C$(CONN):HighChannelMask_RB")
+#! Record("$(P)$(R)C$(CONN):LDOCurrentSetting",160,437,0,0,"$(P)$(R)C$(CONN):LDOCurrentSetting")
+#! Field("$(P)$(R)C$(CONN):LDOCurrentSetting.FLNK",16777215,1,"$(P)$(R)C$(CONN):LDOCurrentSetting.FLNK")
+#! Link("$(P)$(R)C$(CONN):LDOCurrentSetting.FLNK","$(P)$(R)C$(CONN):LDOCurrentSetting_RB")
+#! Record("$(P)$(R)C$(CONN):LDOEnable",760,405,0,0,"$(P)$(R)C$(CONN):LDOEnable")
+#! Field("$(P)$(R)C$(CONN):LDOEnable.FLNK",16777215,1,"$(P)$(R)C$(CONN):LDOEnable.FLNK")
+#! Link("$(P)$(R)C$(CONN):LDOEnable.FLNK","$(P)$(R)C$(CONN):LDOEnable_RB")
+#! Record("$(P)$(R)C$(CONN):LowChannelMask_RB",480,274,0,0,"$(P)$(R)C$(CONN):LowChannelMask_RB")
+#! Record("$(P)$(R)C$(CONN):HighChannelMask_RB",480,54,0,0,"$(P)$(R)C$(CONN):HighChannelMask_RB")
+#! Record("$(P)$(R)C$(CONN):LDOCurrentSetting_RB",520,514,0,0,"$(P)$(R)C$(CONN):LDOCurrentSetting_RB")
+#! Record("$(P)$(R)C$(CONN):LDOEnable_RB",1060,426,0,0,"$(P)$(R)C$(CONN):LDOEnable_RB")

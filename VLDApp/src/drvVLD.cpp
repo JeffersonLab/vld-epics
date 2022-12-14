@@ -19,6 +19,12 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 		   ASYN_CANBLOCK | ASYN_MULTIDEVICE, 1,
 		   0, 0)
 {
+  // VLD Crate variables
+  createParam(crateSlotMaskString, asynParamUInt32Digital, &P_crateSlotMask);
+  createParam(enableSlotMaskString, asynParamUInt32Digital, &P_enableSlotMask);
+  createParam(modeEnabledString, asynParamInt32, &P_modeEnable);
+
+  // Individual VLD module variables
   createParam(firmwareVersionString, asynParamInt32, &P_firmwareVersion);
   createParam(boardIDString, asynParamInt32, &P_boardID);
 
@@ -64,7 +70,8 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   int32_t status = vldInit(vme_addr, vme_incr, nincr, iFlag);
   if(status == 0)
     {
-      setIntegerParam(P_slotmask, vldSlotMask());
+      /* set initiallized slots mask */
+      setIntegerParam(P_crateSlotMask, vldSlotMask());
       vldGStatus(1);
     }
 
@@ -116,7 +123,7 @@ VLD::isConnectorFunction(int32_t function,
 	}
 
       /* Check the LDOEnable */
-      if(function == P_LDO[iconn])
+      if(function == P_LDOEnable[iconn])
 	{
 	  connector = iconn;
 	  isLDOEnable = true;
@@ -198,7 +205,6 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   id = addr2slot(addr);
 
   asynPrint(pasynUser, ASYN_TRACE_FLOW, "readInt32 for 0x%x function = %d\n", addr, function);
-
 
   if(function == P_firmwareVersion)
     {
@@ -388,13 +394,68 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   else
     {
       asynPrint(pasynUser, ASYN_TRACE_ERROR,
-		"%s:%s, port %s, ERROR reading from address %d, status=%d\n",
-		driverName, functionName, this->portName, addr, status);
+		"%s:%s, port %s, ERROR reading from function = %d, address %d, status=%d\n",
+		driverName, functionName, this->portName, function , addr, status);
     }
 
   callParamCallbacks(addr);
   return (status==0) ? asynSuccess : asynError;
 }
+
+asynStatus
+VLD::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask)
+{
+  int id = 0;
+  int addr;
+  int32_t function = pasynUser->reason;
+  int32_t status = 0;
+  static const char *functionName = "readUInt32Digital";
+
+  this->getAddress(pasynUser, &addr);
+  id = addr2slot(addr);
+
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "readUInt32Digital for 0x%x function = %d\n", addr, function);
+
+  if(function == P_enableSlotMask)
+    {
+      uint32_t slotmask = 0;
+      vmeBusLock();
+      slotmask = vldSlotMask();
+      vmeBusUnlock();
+
+      if(slotmask == 0xFFFFFFFF)
+	status = -1;
+      else
+	{
+	  setUIntDigitalParam(addr, P_crateSlotMask, slotmask, mask);
+	  *value = slotmask;
+	}
+    }
+
+  else
+    {
+      // Other functions we call the base class method
+      status = asynPortDriver::readUInt32Digital(pasynUser, value, mask);
+    }
+
+  if (status == 0)
+    {
+      asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+		"%s:%s, port %s, read %d from address %d\n",
+		driverName, functionName, this->portName, *value, addr);
+    }
+  else
+    {
+      asynPrint(pasynUser, ASYN_TRACE_ERROR,
+		"%s:%s, port %s, ERROR reading from address %d, status=%d\n",
+		driverName, functionName, this->portName, addr, status);
+    }
+
+  callParamCallbacks(addr);
+
+  return (status==0) ? asynSuccess : asynError;
+}
+
 asynStatus
 VLD::writeInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements)
 {
@@ -583,6 +644,49 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
   }
   return (status==0) ? asynSuccess : asynError;
 }
+
+asynStatus
+VLD::writeUInt32Digital(asynUser *pasynUser, epicsUInt32 value, epicsUInt32 mask)
+{
+  int id = 0;
+  int addr;
+  int32_t function = pasynUser->reason;
+  int32_t status = 0;
+  static const char *functionName = "writeUInt32Digital";
+  int32_t connector = 0;
+  bool isLoMask = false, isHiMask = false, isLDO = false, isLDOEnable = false;
+
+  this->getAddress(pasynUser, &addr);
+  id = addr2slot(addr);
+
+
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "writeInt32 for 0x%x function = %d\n", addr, function);
+
+  /* Set it now, may overwrite it later */
+  setUIntDigitalParam(addr, function, value, mask);
+
+  // Other functions we call the base class method
+  status = asynPortDriver::writeUInt32Digital(pasynUser, value, mask);
+
+  if (status == 0)
+    {
+      asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+		"%s:%s, port %s, write %d to address %d\n",
+		driverName, functionName, this->portName, value, addr);
+    }
+  else
+    {
+      asynPrint(pasynUser, ASYN_TRACE_ERROR,
+		"%s:%s, port %s, ERROR writing to address %d, status=%d\n",
+		driverName, functionName, this->portName, addr, status);
+    }
+
+  callParamCallbacks(addr);
+
+
+  return (status==0) ? asynSuccess : asynError;
+}
+
 
 /** Configuration command, called directly or from iocsh */
 extern "C" int VLDConfig(const char *portName,

@@ -3,6 +3,16 @@
 
 static const char *driverName = "VLD";
 
+//
+// VLD Crate variables
+//
+#define crateSlotMaskString "CrateSlotMask"   /* asyn digital uint32-t or whatever */
+#define enableSlotMaskString "EnableSlotMask"   /* asyn digital uint32-t or whatever */
+#define modeEnabledString "ModeEnable"  /* enum */
+
+//
+// Individual VLD module variables
+//
 #define firmwareVersionString "FirmwareVersion" /* asynInt32 r/o */
 #define boardIDString         "ModuleID" /* asynInt32 r/o */
 
@@ -13,6 +23,9 @@ static const char *driverName = "VLD";
 
 #define clockSourceString       "ClockSource"         /* asynInt32 r/w */
 
+//
+// Individual VLD connector variables
+//
 #define VLD_CONNECTOR_NUM 5
 #define connectorString  ":C"
 #define loChanMaskString "LowChannelMask"  /* asynInt32 r/w */
@@ -44,11 +57,17 @@ public:
   VLD(const char *portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t nincr, uint32_t iFlag);
 
   virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
+  virtual asynStatus readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask);
   virtual asynStatus writeInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements);
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
+  virtual asynStatus writeUInt32Digital(asynUser *pasynUser, epicsUInt32 value, epicsUInt32 mask);
   virtual asynStatus getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high);
 
 protected:
+  int32_t P_crateSlotMask;
+  int32_t P_enableSlotMask;
+  int32_t P_modeEnable;
+
   int32_t P_firmwareVersion;
   int32_t P_boardID;
 
@@ -79,7 +98,6 @@ protected:
 
 private:
   int32_t P_boardNum;
-  uint32_t P_slotmask;
 
   int32_t addr2slot(uint32_t addr);
   bool    isConnectorFunction(int32_t function,
