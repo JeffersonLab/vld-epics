@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>$(CRATE)</name>
+  <macros>
+    <CRATE>daqlab</CRATE>
+    <P>daqlab</P>
+    <SLOT>7</SLOT>
+  </macros>
+  <width>858</width>
+  <height>500</height>
+  <background_color>
+    <color red="153" green="204" blue="153">
+    </color>
+  </background_color>
+  <widget type="label" version="2.0.0">
+    <name>Label_6</name>
+    <text>${CRATE}</text>
+    <x>350</x>
+    <y>30</y>
+    <width>71</width>
+    <height>25</height>
+    <font>
+      <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="77" green="77" blue="77">
+      </color>
+    </background_color>
+    <transparent>false</transparent>
+    <auto_size>true</auto_size>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_3</name>
+    <pv_name>${P}SlotMask</pv_name>
+    <x>272</x>
+    <y>110</y>
+    <format>4</format>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_7</name>
+    <text>Crate Slot Mask</text>
+    <x>160</x>
+    <y>110</y>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_4</name>
+    <pv_name>${P}NVLD</pv_name>
+    <x>272</x>
+    <y>150</y>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_8</name>
+    <text>NVLD</text>
+    <x>160</x>
+    <y>150</y>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry</name>
+    <pv_name>${P}ActiveMask</pv_name>
+    <x>272</x>
+    <y>190</y>
+    <format>4</format>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_9</name>
+    <text>Active Slot Mask</text>
+    <x>160</x>
+    <y>190</y>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>Text Entry_1</name>
+    <pv_name>${P}Mode</pv_name>
+    <x>272</x>
+    <y>230</y>
+    <height>20</height>
+    <background_color>
+      <color name="Write_Background" red="128" green="255" blue="255">
+      </color>
+    </background_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_10</name>
+    <text>Mode</text>
+    <x>160</x>
+    <y>230</y>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_11</name>
+    <text>Mode Enable</text>
+    <x>160</x>
+    <y>270</y>
+  </widget>
+  <widget type="bool_button" version="2.0.0">
+    <name>Text Entry_2</name>
+    <pv_name>${P}Enable</pv_name>
+    <x>272</x>
+    <y>270</y>
+    <height>20</height>
+    <show_confirm_dialog>false</show_confirm_dialog>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Group</name>
+    <x>100</x>
+    <y>40</y>
+    <width>41</width>
+    <height>360</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_43</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>3</bit>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_44</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>4</bit>
+      <y>20</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_45</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>5</bit>
+      <y>40</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_46</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>6</bit>
+      <y>60</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_47</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>7</bit>
+      <y>80</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_48</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>8</bit>
+      <y>100</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_49</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>9</bit>
+      <y>120</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_50</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>10</bit>
+      <y>140</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_51</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>11</bit>
+      <y>160</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_52</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>12</bit>
+      <y>180</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_53</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>13</bit>
+      <y>200</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_54</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>14</bit>
+      <y>220</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_55</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>15</bit>
+      <y>240</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_56</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>16</bit>
+      <y>260</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_57</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>17</bit>
+      <y>280</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_58</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>18</bit>
+      <y>300</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_59</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>19</bit>
+      <y>320</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Slide Button_60</name>
+      <pv_name>${P}ActiveMask</pv_name>
+      <bit>20</bit>
+      <y>340</y>
+      <width>41</width>
+      <height>20</height>
+      <off_label></off_label>
+      <off_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </off_color>
+      <on_label></on_label>
+      <on_color>
+        <color name="OK" red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Group</name>
+    <x>50</x>
+    <y>40</y>
+    <width>40</width>
+    <height>360</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="byte_monitor" version="2.0.0">
+      <name>Byte Monitor</name>
+      <pv_name>${P}SlotMask</pv_name>
+      <width>40</width>
+      <height>360</height>
+      <startBit>3</startBit>
+      <numBits>18</numBits>
+      <bitReverse>true</bitReverse>
+      <horizontal>false</horizontal>
+      <square>true</square>
+      <labels>
+        <text>3</text>
+        <text>4</text>
+        <text>5</text>
+        <text>6</text>
+        <text>7</text>
+        <text>8</text>
+        <text>9</text>
+        <text>10</text>
+        <text>11</text>
+        <text>12</text>
+        <text>13</text>
+        <text>14</text>
+        <text>15</text>
+        <text>16</text>
+        <text>17</text>
+        <text>18</text>
+        <text>19</text>
+        <text>20</text>
+      </labels>
+    </widget>
+  </widget>
+</display>
