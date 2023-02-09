@@ -20,9 +20,11 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 		   0, 0)
 {
   // VLD Crate variables
-  createParam(crateSlotMaskString, asynParamUInt32Digital, &P_crateSlotMask);
-  createParam(enableSlotMaskString, asynParamUInt32Digital, &P_enableSlotMask);
-  createParam(modeEnabledString, asynParamInt32, &P_modeEnable);
+  createParam(crateSlotMaskString, asynParamInt32, &P_crateSlotMask);
+  createParam(crateNVLDString, asynParamInt32, &P_crateNVLD);
+  createParam(crateActiveMaskString, asynParamInt32, &P_crateActiveMask);
+  createParam(crateModeString, asynParamInt32, &P_crateMode);
+  createParam(crateModeEnableString, asynParamInt32, &P_crateModeEnable);
 
   // Individual VLD module variables
   createParam(firmwareVersionString, asynParamInt32, &P_firmwareVersion);
@@ -34,6 +36,7 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   createParam(triggerSourceMaskString, asynParamInt32, &P_triggerSourceMask);
 
   createParam(clockSourceString, asynParamInt32, &P_clockSource);
+  printf("P_clockSource = %d\n", P_clockSource); // 11
 
   for(int32_t iconn = 0; iconn < VLD_CONNECTOR_NUM; iconn++)
     {
@@ -43,6 +46,7 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 
       sprintf(tmpStr, "%s%d:%s", connectorString, iconn, hiChanMaskString);
       createParam(tmpStr, asynParamInt32, &P_hiChanMask[iconn]);
+      printf("P_hiChanMask[%d] = %d\n", iconn, P_hiChanMask[iconn]); //
 
       sprintf(tmpStr, "%s%d:%s", connectorString, iconn, LDOString);
       createParam(tmpStr, asynParamInt32, &P_LDO[iconn]);
@@ -51,7 +55,9 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
       createParam(tmpStr, asynParamInt32, &P_LDOEnable[iconn]);
     }
 
+
   createParam(bleachTimeString, asynParamInt32, &P_bleachTime);
+  printf("P_bleachTime = %d\n", P_bleachTime); // 32
   createParam(bleachTimerEnableString, asynParamInt32, &P_bleachTimerEnable);
 
   createParam(calibrationPulseWidthString, asynParamInt32, &P_calibrationPulserWidth);
@@ -63,6 +69,8 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   createParam(periodicPulserNumberString, asynParamInt32, &P_periodicPulserNumber);
 
   createParam(triggerCountString, asynParamInt32, &P_triggerCount);
+
+  createParam(pulseWaveformString, asynParamInt32Array, &P_pulseWaveform);
 
   vmeOpenDefaultWindows();
 
@@ -143,25 +151,25 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
   *low = 0;
 
   if(function == P_triggerDelay)
-    *high = 0xffffffff;
+    *high = 0x7f;
 
   else if(function == P_triggerDelayStep)
-    *high = 0xffffffff;
+    *high = 0x1;
 
   else if(function == P_triggerWidth)
-    *high = 0xffffffff;
+    *high = 0x1f;
 
   else if(function == P_triggerSourceMask)
-    *high = 0xffffffff;
+    *high = 0x1F;
 
   else if(function == P_clockSource)
-    *high = 0xffffffff;
+    *high = 0x1;
 
   else if((function >= P_LDO[0]) && (function <=P_LDO[VLD_CONNECTOR_NUM-1]))
-    *high = 0xffffffff;
+    *high = 0x7;
 
   else if((function >= P_LDOEnable[0]) && (function <=P_LDOEnable[VLD_CONNECTOR_NUM-1]))
-    *high = 0xffffffff;
+    *high = 0x1;
 
   else if((function >= P_loChanMask[0]) && (function <=P_loChanMask[VLD_CONNECTOR_NUM-1]))
     *high = 0x3fffff;
@@ -170,19 +178,25 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
     *high = 0x3fffff;
 
   else if(function == P_bleachTime)
-    *high = 0xffffffff;
+    *high = 0x0FFFFFFF;
+
+  else if(function == P_bleachTimerEnable)
+    *high = 0x1;
 
   else if(function == P_calibrationPulserWidth)
-    *high = 0xffffffff;
+    *high = 0x3ff;
 
   else if(function == P_randomPulserPrescale)
-    *high = 0xffffffff;
+    *high = 0x7;
+
+  else if(function == P_randomPulserEnable)
+    *high = 0x1;
 
   else if(function == P_periodicPulserPeriod)
-    *high = 0xffffffff;
+    *high = 0xffff;
 
   else if(function == P_periodicPulserNumber)
-    *high = 0xffffffff;
+    *high = 0xffff;
 
   else
     return(asynError);
@@ -198,15 +212,43 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   int32_t function = pasynUser->reason;
   int status=0;
   static const char *functionName = "readInt32";
+  const char *paramName;
   int32_t connector = 0;
   bool isLoMask = false, isHiMask = false, isLDO = false, isLDOEnable = false;
 
   this->getAddress(pasynUser, &addr);
   id = addr2slot(addr);
 
-  asynPrint(pasynUser, ASYN_TRACE_FLOW, "readInt32 for 0x%x function = %d\n", addr, function);
+  getParamName(function, &paramName);
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "readInt32 for 0x%x function = %d (%s)\n",
+	    addr, function, paramName);
 
-  if(function == P_firmwareVersion)
+  if(function == P_crateSlotMask)
+    {
+      uint32_t slotmask = 0;
+      vmeBusLock();
+      slotmask = vldSlotMask();
+      vmeBusUnlock();
+
+      if(slotmask == 0xFFFFFFFF)
+	status = -1;
+      else
+	{
+	  setIntegerParam(addr, P_crateSlotMask, slotmask);
+	  *value = slotmask;
+	}
+    }
+  else if(function == P_crateNVLD)
+    {
+      vmeBusLock();
+      *value = vldGetNVLD();
+      status = 0;
+      vmeBusUnlock();
+
+      setIntegerParam(P_crateNVLD, *value);
+    }
+
+  else if(function == P_firmwareVersion)
     {
       uint32_t fw = 0;
       vmeBusLock();
@@ -282,7 +324,7 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 	  status = vldGetChannelMask(id, connector, &loChanEnableMask, &hiChanEnableMask);
 
 	  setIntegerParam(addr, P_loChanMask[connector], (epicsInt32) loChanEnableMask);
-	  setIntegerParam(addr, P_hiChanMask[connector], (epicsInt32) hiChanEnableMask);
+	  setIntegerParam(addr, P_hiChanMask[connector], (epicsUInt32) hiChanEnableMask);
 
 	  if(isLoMask)
 	    *value = loChanEnableMask;
@@ -388,6 +430,56 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   if (status == 0)
     {
       asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+		"%s:%s, %s Slot %d %s, read %d\n",
+		driverName, functionName, this->portName,
+		id, paramName, *value);
+    }
+  else
+    {
+      asynPrint(pasynUser, ASYN_TRACE_ERROR,
+		"%s:%s, %s Slot %d %s, ERROR reading from function (%d), status=%d\n",
+		driverName, functionName, this->portName,
+		id, paramName, function, status);
+    }
+
+  callParamCallbacks(addr);
+  return (status==0) ? asynSuccess : asynError;
+}
+
+
+asynStatus
+VLD::readInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements, size_t *nIn)
+{
+  int id = 0;
+  int addr;
+  int32_t function = pasynUser->reason;
+  int32_t status = 0;
+  static const char *functionName = __func__;
+
+  this->getAddress(pasynUser, &addr);
+  id = addr2slot(addr);
+
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "%s for 0x%x function = %d\n",
+	    __func__, addr, function);
+
+
+  if (function == P_pulseWaveform)
+    {
+      uint32_t nsamples = 0;
+      vmeBusLock();
+      status = vldGetExamplePulse((uint32_t *)value, &nsamples);
+      nElements = *nIn = nsamples;
+      vmeBusUnlock();
+    }
+  else
+    {
+      // Other functions we call the base class method
+      status = asynPortDriver::readInt32(pasynUser, value);
+    }
+
+  if (status == 0)
+    {
+      asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
 		"%s:%s, port %s, read %d from address %d\n",
 		driverName, functionName, this->portName, *value, addr);
     }
@@ -400,70 +492,47 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 
   callParamCallbacks(addr);
   return (status==0) ? asynSuccess : asynError;
-}
 
-asynStatus
-VLD::readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask)
-{
-  int id = 0;
-  int addr;
-  int32_t function = pasynUser->reason;
-  int32_t status = 0;
-  static const char *functionName = "readUInt32Digital";
 
-  this->getAddress(pasynUser, &addr);
-  id = addr2slot(addr);
-
-  asynPrint(pasynUser, ASYN_TRACE_FLOW, "readUInt32Digital for 0x%x function = %d\n", addr, function);
-
-  if(function == P_enableSlotMask)
-    {
-      uint32_t slotmask = 0;
-      vmeBusLock();
-      slotmask = vldSlotMask();
-      vmeBusUnlock();
-
-      if(slotmask == 0xFFFFFFFF)
-	status = -1;
-      else
-	{
-	  setUIntDigitalParam(addr, P_crateSlotMask, slotmask, mask);
-	  *value = slotmask;
-	}
-    }
-
-  else
-    {
-      // Other functions we call the base class method
-      status = asynPortDriver::readUInt32Digital(pasynUser, value, mask);
-    }
-
-  if (status == 0)
-    {
-      asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
-		"%s:%s, port %s, read %d from address %d\n",
-		driverName, functionName, this->portName, *value, addr);
-    }
-  else
-    {
-      asynPrint(pasynUser, ASYN_TRACE_ERROR,
-		"%s:%s, port %s, ERROR reading from address %d, status=%d\n",
-		driverName, functionName, this->portName, addr, status);
-    }
-
-  callParamCallbacks(addr);
-
-  return (status==0) ? asynSuccess : asynError;
 }
 
 asynStatus
 VLD::writeInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements)
 {
+  int id = 0;
+  int addr;
+  int function = pasynUser->reason;
   int32_t status = 0;
 
-  // Other functions we call the base class method
-  status = asynPortDriver::writeInt32Array(pasynUser, value, nElements);
+  this->getAddress(pasynUser, &addr);
+  id = addr;
 
+  asynPrint(pasynUser, ASYN_TRACE_FLOW, "%s for 0x%x function = %d\n",
+	    __func__, addr, function);
+
+  if(function == P_pulseWaveform)
+    {
+      vmeBusLock();
+      status = vldLoadPulse32(id, (uint32_t *)value, nElements);
+      vmeBusUnlock();
+    }
+  else
+    {
+
+      // Other functions we call the base class method
+      status = asynPortDriver::writeInt32Array(pasynUser, value, nElements);
+    }
+
+  callParamCallbacks(addr);
+  if (status == 0) {
+    asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+	      "%s:%s, port %s, wrote array[%d] to address %d\n",
+	      driverName, __func__, this->portName, (int)nElements, addr);
+  } else {
+    asynPrint(pasynUser, ASYN_TRACE_ERROR,
+	      "%s:%s, port %s, ERROR writing array[%d] to address %d, status=%d\n",
+	      driverName, __func__, this->portName, (int)nElements, addr, status);
+  }
   return (status==0) ? asynSuccess : asynError;
 }
 asynStatus
@@ -642,48 +711,6 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 	      "%s:%s, port %s, ERROR writing %d to address %d, status=%d\n",
 	      driverName, functionName, this->portName, value, addr, status);
   }
-  return (status==0) ? asynSuccess : asynError;
-}
-
-asynStatus
-VLD::writeUInt32Digital(asynUser *pasynUser, epicsUInt32 value, epicsUInt32 mask)
-{
-  int id = 0;
-  int addr;
-  int32_t function = pasynUser->reason;
-  int32_t status = 0;
-  static const char *functionName = "writeUInt32Digital";
-  int32_t connector = 0;
-  bool isLoMask = false, isHiMask = false, isLDO = false, isLDOEnable = false;
-
-  this->getAddress(pasynUser, &addr);
-  id = addr2slot(addr);
-
-
-  asynPrint(pasynUser, ASYN_TRACE_FLOW, "writeInt32 for 0x%x function = %d\n", addr, function);
-
-  /* Set it now, may overwrite it later */
-  setUIntDigitalParam(addr, function, value, mask);
-
-  // Other functions we call the base class method
-  status = asynPortDriver::writeUInt32Digital(pasynUser, value, mask);
-
-  if (status == 0)
-    {
-      asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
-		"%s:%s, port %s, write %d to address %d\n",
-		driverName, functionName, this->portName, value, addr);
-    }
-  else
-    {
-      asynPrint(pasynUser, ASYN_TRACE_ERROR,
-		"%s:%s, port %s, ERROR writing to address %d, status=%d\n",
-		driverName, functionName, this->portName, addr, status);
-    }
-
-  callParamCallbacks(addr);
-
-
   return (status==0) ? asynSuccess : asynError;
 }
 

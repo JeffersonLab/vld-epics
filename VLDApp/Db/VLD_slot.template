@@ -4,7 +4,6 @@
 #! DBDEND
 
 
-
 record(longin, "$(P)$(R)FirmwareVersion") {
   field(DESC, "Firmware Version")
   field(SCAN, "Passive")
@@ -28,7 +27,6 @@ record(longin, "$(P)$(R)TriggerCount") {
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))TriggerCount")
 }
-
 
 record(bo, "$(P)$(R)ClockSource") {
   field(DESC, "Clock Source")
@@ -396,7 +394,7 @@ record(fanout, "${P}${R}TriggerDelayFanout") {
 }
 
 #! Further lines contain data used by VisualDCT
-#! View(288,60,1.0)
+#! View(0,1057,1.0)
 #! Record("$(P)$(R)FirmwareVersion",20,14,0,0,"$(P)$(R)FirmwareVersion")
 #! Record("$(P)$(R)ModuleID",260,14,0,0,"$(P)$(R)ModuleID")
 #! Record("$(P)$(R)TriggerCount",520,34,0,0,"$(P)$(R)TriggerCount")
@@ -499,9 +497,6 @@ record(fanout, "${P}${R}TriggerDelayFanout") {
 #! Field("${P}${R}TriggerWidthSet.VAL",16777215,1,"${P}${R}TriggerWidthSet.VAL")
 #! Field("${P}${R}TriggerWidthSet.FLNK",16777215,1,"${P}${R}TriggerWidthSet.FLNK")
 #! Link("${P}${R}TriggerWidthSet.FLNK","${P}${R}TriggerWidthCalc")
-#! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
-#! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
-#! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
 #! Record("${P}${R}TriggerDelaySetFanout",1320,1136,0,1,"${P}${R}TriggerDelaySetFanout")
 #! Field("${P}${R}TriggerDelaySetFanout.LNK1",16777215,1,"${P}${R}TriggerDelaySetFanout.LNK1")
 #! Link("${P}${R}TriggerDelaySetFanout.LNK1","${P}${R}TriggerDelayCalcout")
@@ -512,3 +507,6 @@ record(fanout, "${P}${R}TriggerDelayFanout") {
 #! Link("${P}${R}TriggerDelayFanout.LNK1","$(P)$(R)TriggerDelay_RB")
 #! Field("${P}${R}TriggerDelayFanout.LNK2",16777215,1,"${P}${R}TriggerDelayFanout.LNK2")
 #! Link("${P}${R}TriggerDelayFanout.LNK2","$(P)$(R)TriggerDelayStep_RB")
+#! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
+#! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
+#! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)

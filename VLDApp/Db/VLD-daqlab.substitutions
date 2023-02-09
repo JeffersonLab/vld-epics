@@ -1,3 +1,9 @@
+file "${TOP}/db/VLD_crate.template"
+{
+pattern
+{ R,	ADDR}
+{ Slot7:, 7}
+}
 
 file "${TOP}/db/VLD_slot.template"
 {

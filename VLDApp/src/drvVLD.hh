@@ -6,9 +6,11 @@ static const char *driverName = "VLD";
 //
 // VLD Crate variables
 //
-#define crateSlotMaskString "CrateSlotMask"   /* asyn digital uint32-t or whatever */
-#define enableSlotMaskString "EnableSlotMask"   /* asyn digital uint32-t or whatever */
-#define modeEnabledString "ModeEnable"  /* enum */
+#define crateSlotMaskString "SlotMask"   /* asyn digital uint32-t or whatever */
+#define crateNVLDString "NVLD"   /* asyn digital uint32-t or whatever */
+#define crateActiveMaskString "ActiveMask"   /* asyn digital uint32-t or whatever */
+#define crateModeString "Mode"   /* asyn digital uint32-t or whatever */
+#define crateModeEnableString "ModeEnable"  /* enum */
 
 //
 // Individual VLD module variables
@@ -46,6 +48,7 @@ static const char *driverName = "VLD";
 
 #define triggerCountString "TriggerCount" /* asynInt32 r/o */
 
+#define pulseWaveformString "PulseWaveform" /* asynInt32Array r/w */
 
 #define MAX_SIGNALS 40
 
@@ -57,16 +60,17 @@ public:
   VLD(const char *portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t nincr, uint32_t iFlag);
 
   virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
-  virtual asynStatus readUInt32Digital(asynUser *pasynUser, epicsUInt32 *value, epicsUInt32 mask);
+  virtual asynStatus readInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements, size_t *nIn);
   virtual asynStatus writeInt32Array(asynUser *pasynUser, epicsInt32 *value, size_t nElements);
   virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-  virtual asynStatus writeUInt32Digital(asynUser *pasynUser, epicsUInt32 value, epicsUInt32 mask);
   virtual asynStatus getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high);
 
 protected:
   int32_t P_crateSlotMask;
-  int32_t P_enableSlotMask;
-  int32_t P_modeEnable;
+  int32_t P_crateNVLD;
+  int32_t P_crateActiveMask;
+  int32_t P_crateMode;
+  int32_t P_crateModeEnable;
 
   int32_t P_firmwareVersion;
   int32_t P_boardID;
@@ -95,6 +99,8 @@ protected:
   int32_t P_periodicPulserNumber;
 
   int32_t P_triggerCount;
+
+  int32_t P_pulseWaveform;
 
 private:
   int32_t P_boardNum;

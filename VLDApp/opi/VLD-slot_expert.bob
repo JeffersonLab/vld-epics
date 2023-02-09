@@ -386,7 +386,7 @@
     <widget type="label" version="2.0.0">
       <name>Label_39</name>
       <text>Connector #${CHANNEL}</text>
-      <width>266</width>
+      <width>141</width>
       <height>25</height>
       <font>
         <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
@@ -492,7 +492,7 @@
     <widget type="label" version="2.0.0">
       <name>Label_45</name>
       <text>Connector #${CHANNEL}</text>
-      <width>266</width>
+      <width>141</width>
       <height>25</height>
       <font>
         <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
@@ -598,7 +598,7 @@
     <widget type="label" version="2.0.0">
       <name>Label_51</name>
       <text>Connector #${CHANNEL}</text>
-      <width>266</width>
+      <width>141</width>
       <height>25</height>
       <font>
         <font name="Header 1" family="Liberation Sans" style="BOLD" size="22.0">
@@ -733,12 +733,5 @@
     <pv_name>${P}TriggerWidthCalc</pv_name>
     <x>730</x>
     <y>91</y>
-  </widget>
-  <widget type="led" version="2.0.0">
-    <name>LED</name>
-    <x>430</x>
-    <y>660</y>
-    <width>0</width>
-    <height>0</height>
   </widget>
 </display>
