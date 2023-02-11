@@ -48,9 +48,13 @@ static const char *driverName = "VLD";
 
 #define triggerCountString "TriggerCount" /* asynInt32 r/o */
 
-#define pulseWaveformTypeString "PulseWaveformType" /* asynInt32 r/o */
+#define pulseWaveformTypeString "PulseWaveformType" /* asynInt32 w/o */
 
 #define pulseWaveformString "PulseWaveform" /* asynInt32Array r/w */
+
+#define squareWaveAmplitude "SquareWaveAmplitude" /* asynInt32 w/o */
+#define squareWaveWidth "SquareWaveWidth" /* asynInt32 w/o */
+
 
 #define MAX_SIGNALS 40
 
@@ -105,8 +109,15 @@ protected:
   int32_t P_pulseWaveformType;
   int32_t P_pulseWaveform;
 
+  int32_t P_squareWaveAmplitude;
+  int32_t P_squareWaveWidth;
+
 private:
   int32_t P_boardNum;
+
+  uint32_t vld_ActiveMask;
+  uint32_t vld_ModeEnable;
+  uint32_t vld_Mode;
 
   int32_t addr2slot(uint32_t addr);
   bool    isConnectorFunction(int32_t function,

@@ -73,6 +73,11 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   createParam(pulseWaveformTypeString, asynParamInt32, &P_pulseWaveformType);
   createParam(pulseWaveformString, asynParamInt32Array, &P_pulseWaveform);
 
+  createParam(squareWaveAmplitude, asynParamInt32, &P_squareWaveAmplitude);
+  createParam(squareWaveWidth, asynParamInt32, &P_squareWaveWidth);
+
+  vld_ActiveMask = 0;
+
   vmeOpenDefaultWindows();
 
   /* Init VLD here */
@@ -200,7 +205,13 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
     *high = 0xffff;
 
   else if(function == P_pulseWaveformType)
-    *high = 2;
+    *high = 1;
+
+  else if(function == P_squareWaveAmplitude)
+    *high = 0x3F;
+
+  else if(function == P_squareWaveWidth)
+    *high = 1000;
 
   else
     return(asynError);
@@ -248,6 +259,14 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
       *value = vldGetNVLD();
       status = 0;
       vmeBusUnlock();
+
+      setIntegerParam(P_crateNVLD, *value);
+    }
+
+  else if(function == P_crateActiveMask)
+    {
+      status = 0;
+      *value = vld_ActiveMask;
 
       setIntegerParam(P_crateNVLD, *value);
     }
@@ -368,6 +387,10 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
       else if (function == P_bleachTimerEnable)
 	*value = enable;
 
+      if(enable)
+	vld_ActiveMask |= (1 << id);
+      else
+	vld_ActiveMask &= ~(1 << id);
     }
 
   else if (function == P_calibrationPulserWidth)
@@ -395,6 +418,12 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 	*value = prescale;
       else if (function == P_randomPulserEnable)
 	*value = enable;
+
+      if(enable)
+	vld_ActiveMask |= (1 << id);
+      else
+	vld_ActiveMask &= ~(1 << id);
+
     }
 
   else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserNumber))
@@ -412,6 +441,10 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
       else if (function == P_periodicPulserNumber)
 	*value = number;
 
+      if(number != 0)
+	vld_ActiveMask |= (1 << id);
+      else
+	vld_ActiveMask &= ~(1 << id);
     }
 
   else if (function == P_triggerCount)
@@ -425,15 +458,17 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
       *value = trigcnt;
     }
 
+  else if ((function == P_squareWaveAmplitude) || (function == P_squareWaveWidth))
+    {
+      // These are soft channels, values used by P_Pulsewaveformtype
+      // Just return the previously written value
+      status = 0;
+    }
+
   else if (function == P_pulseWaveformType)
     {
-      uint32_t waveform_type = 0;
-      vmeBusLock();
-      status = vldGetPulseWaveformType(id, &waveform__type);
-      vmeBusUnlock();
-
-      setIntegerParam(addr, P_pulseWaveformType, waveform_type);
-      *value = waveform_type;
+      // Just return the previously written value
+      status = 0;
     }
 
   else
@@ -713,12 +748,29 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
   else if (function == P_pulseWaveformType)
     {
-      uint32_t waveform_type;
+      uint32_t waveform_type = 0, square_wave_amp = 0, square_wave_width = 0;
+
+      getIntegerParam(addr, P_squareWaveAmplitude, (epicsInt32 *)&square_wave_amp);
+      getIntegerParam(addr, P_squareWaveWidth, (epicsInt32 *)&square_wave_width);
 
       waveform_type = value;
 
       vmeBusLock();
-      status = vldSetPulseWaveformType(id, waveform_type);
+      switch(waveform_type)
+	{
+	case 0: // Waveform from William Gu
+	  status = vldLoadExamplePulse(id);
+	  break;
+
+	case 1: // Square Wave
+	  status = vldLoadSquarePulse(id, (uint8_t) square_wave_width, (uint8_t) square_wave_amp);
+	  break;
+
+	case 2: // User defined
+	default:
+	  status = -1;
+	}
+
       vmeBusUnlock();
 
     }

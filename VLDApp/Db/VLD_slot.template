@@ -425,8 +425,24 @@ record(fanout, "${P}${R}TriggerDelayFanout") {
   field(LNK2, "$(P)$(R)TriggerDelayStep_RB")
 }
 
+record(longout, "${P}${R}SquareWaveAmplitude") {
+  field(DTYP, "asynInt32")
+  field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveAmplitude")
+}
+
+
+record(longout, "${P}${R}SquareWaveWidth") {
+  field(DTYP, "asynInt32")
+  field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveWidth")
+}
+
+record(longout, "${P}${R}PulseWaveformType") {
+  field(DTYP, "asynInt32")
+  field(OUT, "@asyn($(PORT),$(ADDR))PulseWaveformType")
+}
+
 #! Further lines contain data used by VisualDCT
-#! View(379,0,1.0)
+#! View(0,1269,1.0)
 #! Record("$(P)$(R)FirmwareVersion",20,14,0,0,"$(P)$(R)FirmwareVersion")
 #! Record("$(P)$(R)ModuleID",260,14,0,0,"$(P)$(R)ModuleID")
 #! Record("$(P)$(R)TriggerCount",520,34,0,0,"$(P)$(R)TriggerCount")
@@ -542,3 +558,6 @@ record(fanout, "${P}${R}TriggerDelayFanout") {
 #! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
 #! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
 #! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
+#! Record("${P}${R}SquareWaveAmplitude",160,1476,0,1,"${P}${R}SquareWaveAmplitude")
+#! Record("${P}${R}SquareWaveWidth",160,1616,0,1,"${P}${R}SquareWaveWidth")
+#! Record("${P}${R}PulseWaveformType",400,1516,0,1,"${P}${R}PulseWaveformType")
