@@ -48,6 +48,8 @@ static const char *driverName = "VLD";
 
 #define triggerCountString "TriggerCount" /* asynInt32 r/o */
 
+#define pulseWaveformTypeString "PulseWaveformType" /* asynInt32 r/o */
+
 #define pulseWaveformString "PulseWaveform" /* asynInt32Array r/w */
 
 #define MAX_SIGNALS 40
@@ -100,6 +102,7 @@ protected:
 
   int32_t P_triggerCount;
 
+  int32_t P_pulseWaveformType;
   int32_t P_pulseWaveform;
 
 private:

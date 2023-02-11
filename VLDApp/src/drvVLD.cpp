@@ -70,6 +70,7 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
 
   createParam(triggerCountString, asynParamInt32, &P_triggerCount);
 
+  createParam(pulseWaveformTypeString, asynParamInt32, &P_pulseWaveformType);
   createParam(pulseWaveformString, asynParamInt32Array, &P_pulseWaveform);
 
   vmeOpenDefaultWindows();
@@ -197,6 +198,9 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
 
   else if(function == P_periodicPulserNumber)
     *high = 0xffff;
+
+  else if(function == P_pulseWaveformType)
+    *high = 2;
 
   else
     return(asynError);
@@ -419,6 +423,17 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 
       setIntegerParam(addr, P_triggerCount, trigcnt);
       *value = trigcnt;
+    }
+
+  else if (function == P_pulseWaveformType)
+    {
+      uint32_t waveform_type = 0;
+      vmeBusLock();
+      status = vldGetPulseWaveformType(id, &waveform__type);
+      vmeBusUnlock();
+
+      setIntegerParam(addr, P_pulseWaveformType, waveform_type);
+      *value = waveform_type;
     }
 
   else
@@ -692,6 +707,18 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
       vmeBusLock();
       status = vldSetPeriodicPulser(id, period, number);
+      vmeBusUnlock();
+
+    }
+
+  else if (function == P_pulseWaveformType)
+    {
+      uint32_t waveform_type;
+
+      waveform_type = value;
+
+      vmeBusLock();
+      status = vldSetPulseWaveformType(id, waveform_type);
       vmeBusUnlock();
 
     }
