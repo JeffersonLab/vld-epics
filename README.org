@@ -127,7 +127,7 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 
 - ~${PORT}${SLOT}:RandomPulserPrescale~
   - Set the prescale to the random pulser.  This is the value written to hardware.
-~${PORT}${SLOT}:RandomPulserPrescale_RB~
+- ~${PORT}${SLOT}:RandomPulserPrescale_RB~
  - Readback of the current prescale on the random pulser.
    
 - ~${PORT}${SLOT}:RandomPulserEnable~
@@ -154,32 +154,32 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
   - Readback value for the pulse width of the trigger LEMO output
     
 **** Additional delay
-${PORT}${SLOT}:TriggerDelay
-${PORT}${SLOT}:TriggerDelay_RB
-${PORT}${SLOT}:TriggerDelaySet
-${PORT}${SLOT}:TriggerDelayStep
-${PORT}${SLOT}:TriggerDelayCalc
-${PORT}${SLOT}:TriggerDelayCalcout
-${PORT}${SLOT}:TriggerDelayStepCalcout
-${PORT}${SLOT}:TriggerDelaySetFanout
-${PORT}${SLOT}:TriggerDelayFanout
-${PORT}${SLOT}:TriggerDelayStep_RB
+- ~${PORT}${SLOT}:TriggerDelay~
+- ~${PORT}${SLOT}:TriggerDelay_RB~
+- ~${PORT}${SLOT}:TriggerDelaySet~
+- ~${PORT}${SLOT}:TriggerDelayStep~
+- ~${PORT}${SLOT}:TriggerDelayCalc~
+- ~${PORT}${SLOT}:TriggerDelayCalcout~
+- ~${PORT}${SLOT}:TriggerDelayStepCalcout~
+- ~${PORT}${SLOT}:TriggerDelaySetFanout~
+- ~${PORT}${SLOT}:TriggerDelayFanout~
+- ~${PORT}${SLOT}:TriggerDelayStep_RB~
 
 **** May not be relevant for this app
-${PORT}${SLOT}:TriggerWidth
-${PORT}${SLOT}:TriggerWidthSet
-${PORT}${SLOT}:TriggerWidth_RB
-${PORT}${SLOT}:TriggerWidthCalc
+- ~${PORT}${SLOT}:TriggerWidth~
+- ~${PORT}${SLOT}:TriggerWidthSet~
+- ~${PORT}${SLOT}:TriggerWidth_RB~
+- ~${PORT}${SLOT}:TriggerWidthCalc~
 
 
 *** Bleaching Mode
-${PORT}${SLOT}:BleachTime
-${PORT}${SLOT}:BleachTime_RB
-${PORT}${SLOT}:BleachTimerEnable
-${PORT}${SLOT}:BleachTimerEnable_RB
+- ~${PORT}${SLOT}:BleachTime~
+- ~${PORT}${SLOT}:BleachTime_RB~
+- ~${PORT}${SLOT}:BleachTimerEnable~
+- ~${PORT}${SLOT}:BleachTimerEnable_RB~
 
-${PORT}${SLOT}:${CONN}:LDOEnable
-${PORT}${SLOT}:${CONN}:LDOEnable_RB
+- ~${PORT}${SLOT}:${CONN}:LDOEnable~
+- ~${PORT}${SLOT}:${CONN}:LDOEnable_RB~
 
-${PORT}${SLOT}:${CONN}:LDOCurrentSetting
-${PORT}${SLOT}:${CONN}:LDOCurrentSetting_RB
+- ~${PORT}${SLOT}:${CONN}:LDOCurrentSetting~
+- ~${PORT}${SLOT}:${CONN}:LDOCurrentSetting_RB~
