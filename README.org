@@ -56,3 +56,130 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
         # ...
         dbLoadTemplate($(TOP)/db/"VLD-$(PORT).substitutions","P=$(PORT),PORT=$(PORT)")
   #+end_src
+
+* PVs
+
+** Crate level
+- ~${PORT}NVLD~
+  - number of VLD found during IOC initialization.
+
+- ~${PORT}SlotMask~
+  - Mask of slot numbers indicating the slots where VLD were found.
+
+- ~${PORT}Enable~
+  - Decision to enable or disable the current ~${PORT}Mode~
+
+- ~${PORT}Mode~
+  - Selected mode of operation, calibration or beaching
+
+- ~${PORT}ActiveMask~
+  - What slots are currently enabled
+    
+** Slot level
+*** General
+- ~${PORT}${SLOT}:ModuleID~
+  - Module ID of the VLD.  Should be ~0x1EDD~
+
+- ~${PORT}${SLOT}:FirmwareVersion~
+  - Firmware Version of the VLD
+
+- ~${PORT}${SLOT}:ClockSource~
+  - Set source of 250MHz clock.
+    - 0: internal
+    - 1: front panel LEMO
+      
+- ~${PORT}${SLOT}:ClockSource_RB~
+  - Readback of current clock source
+
+- ~${PORT}${SLOT}:TriggerSourceMask~
+  - Set source of calibration pulse
+    - 0:
+    - 1:
+    - 2:
+    
+- ~${PORT}${SLOT}:TriggerSourceMask_RB~
+  - Readback of calibration pulse source
+
+*** Calibration Pulse Mode
+- ~${PORT}${SLOT}:TriggerCount~
+  - Readback of number of calibration pulses received (or generated)
+
+**** Connector - channel enable masks
+
+- ~${PORT}${SLOT}:${CONN}:LowChannelMask~
+  - Mask of channels to enable (0-17)
+- ~${PORT}${SLOT}:${CONN}:HighChannelMask~
+  - Mask of channels to enable (18-35)
+- ~${PORT}${SLOT}:${CONN}:LowChannelMask_RB~
+  - Readback of currently enabled channels (0-17)
+- ~${PORT}${SLOT}:${CONN}:HighChannelMask_RB~
+  - Readback of currently enabled channels (18-35)
+
+**** Random Pulser
+- ~${PORT}${SLOT}:RandomPulserRateSet~
+  - mbbo: Set the random pulse rate
+    - 0: 700kHz
+    - 1: 350kHz
+    ...
+    - 15: 21Hz
+- ~${PORT}${SLOT}:RandomPulserRate~
+  - mbbo: Readback of current random pulser rate
+
+- ~${PORT}${SLOT}:RandomPulserPrescale~
+  - Set the prescale to the random pulser.  This is the value written to hardware.
+~${PORT}${SLOT}:RandomPulserPrescale_RB~
+ - Readback of the current prescale on the random pulser.
+   
+- ~${PORT}${SLOT}:RandomPulserEnable~
+  - Enable / Disable the random pulser
+    
+- ~${PORT}${SLOT}:RandomPulserEnable_RB~
+  - Readback of random pulser state
+
+**** Fixed Pulser
+- ~${PORT}${SLOT}:PeriodicPulserPeriod~
+  - Set value for the fixed pulser period
+- ~${PORT}${SLOT}:PeriodicPulserPeriod_RB~
+  - Readback value for the fixed pulser period
+
+- ~${PORT}${SLOT}:PeriodicPulserNumber~
+  - Set value for the fixed pulser number of pulses
+- ~${PORT}${SLOT}:PeriodicPulserNumber_RB~
+  - Readback value for the fixed pulser number of pulses
+
+**** LEMO Output
+- ~${PORT}${SLOT}:CalibrationPulseWidth~
+  - Set value for the pulse width of the trigger LEMO output
+- ~${PORT}${SLOT}:CalibrationPulseWidth_RB~
+  - Readback value for the pulse width of the trigger LEMO output
+    
+**** Additional delay
+${PORT}${SLOT}:TriggerDelay
+${PORT}${SLOT}:TriggerDelay_RB
+${PORT}${SLOT}:TriggerDelaySet
+${PORT}${SLOT}:TriggerDelayStep
+${PORT}${SLOT}:TriggerDelayCalc
+${PORT}${SLOT}:TriggerDelayCalcout
+${PORT}${SLOT}:TriggerDelayStepCalcout
+${PORT}${SLOT}:TriggerDelaySetFanout
+${PORT}${SLOT}:TriggerDelayFanout
+${PORT}${SLOT}:TriggerDelayStep_RB
+
+**** May not be relevant for this app
+${PORT}${SLOT}:TriggerWidth
+${PORT}${SLOT}:TriggerWidthSet
+${PORT}${SLOT}:TriggerWidth_RB
+${PORT}${SLOT}:TriggerWidthCalc
+
+
+*** Bleaching Mode
+${PORT}${SLOT}:BleachTime
+${PORT}${SLOT}:BleachTime_RB
+${PORT}${SLOT}:BleachTimerEnable
+${PORT}${SLOT}:BleachTimerEnable_RB
+
+${PORT}${SLOT}:${CONN}:LDOEnable
+${PORT}${SLOT}:${CONN}:LDOEnable_RB
+
+${PORT}${SLOT}:${CONN}:LDOCurrentSetting
+${PORT}${SLOT}:${CONN}:LDOCurrentSetting_RB
