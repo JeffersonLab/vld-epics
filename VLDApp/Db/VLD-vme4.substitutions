@@ -1,0 +1,25 @@
+file "${TOP}/db/VLD_crate.template"
+{
+pattern
+{ R,	ADDR}
+{ VLD17:, 17}
+}
+
+
+file "${TOP}/db/VLD_slot.template"
+{
+pattern
+{ R,	ADDR}
+{ VLD17:, 17}
+}
+
+file "${TOP}/db/VLD_connector.template"
+{
+pattern
+{ R,   ADDR,   CONN}
+{ VLD17:, 17,  0}
+{ VLD17:, 17,  1}
+{ VLD17:, 17,  2}
+{ VLD17:, 17,  3}
+{ VLD17:, 17,  4}
+}

@@ -66,12 +66,6 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 - ~${PORT}SlotMask~
   - Mask of slot numbers indicating the slots where VLD were found.
 
-- ~${PORT}Enable~
-  - Decision to enable or disable the current ~${PORT}Mode~
-
-- ~${PORT}Mode~
-  - Selected mode of operation, calibration or beaching
-
 - ~${PORT}ActiveMask~
   - What slots are currently enabled
     
@@ -124,11 +118,6 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
     - 15: 21Hz
 - ~${PORT}${SLOT}:RandomPulserRate~
   - mbbo: Readback of current random pulser rate
-
-- ~${PORT}${SLOT}:RandomPulserPrescale~
-  - Set the prescale to the random pulser.  This is the value written to hardware.
-- ~${PORT}${SLOT}:RandomPulserPrescale_RB~
- - Readback of the current prescale on the random pulser.
    
 - ~${PORT}${SLOT}:RandomPulserEnable~
   - Enable / Disable the random pulser
