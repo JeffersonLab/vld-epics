@@ -187,7 +187,7 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
     *high = 0x3ff;
 
   else if(function == P_randomPulserPrescale)
-    *high = 0x7;
+    *high = 0xF;
 
   else if(function == P_randomPulserEnable)
     *high = 0x1;
