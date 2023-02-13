@@ -86,13 +86,16 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
   - Readback of current clock source
 
 - ~${PORT}${SLOT}:TriggerSourceMask~
-  - Set source of calibration pulse
-    - 0:
-    - 1:
-    - 2:
+  - mbbo: Set source of calibration pulse
+    - 0: Periodic Pulser
+    - 1: Random Pulser
+    - 12: Front Panel LEMO
     
 - ~${PORT}${SLOT}:TriggerSourceMask_RB~
-  - Readback of calibration pulse source
+  - mbbo: Readback of calibration pulse source
+    - 0: Periodic Pulser
+    - 1: Random Pulser
+    - 12: Front Panel LEMO
 
 *** Calibration Pulse Mode
 - ~${PORT}${SLOT}:TriggerCount~
@@ -154,21 +157,24 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 - ~${PORT}${SLOT}:TriggerDelayFanout~
 - ~${PORT}${SLOT}:TriggerDelayStep_RB~
 
-**** May not be relevant for this app
-- ~${PORT}${SLOT}:TriggerWidth~
-- ~${PORT}${SLOT}:TriggerWidthSet~
-- ~${PORT}${SLOT}:TriggerWidth_RB~
-- ~${PORT}${SLOT}:TriggerWidthCalc~
-
 
 *** Bleaching Mode
 - ~${PORT}${SLOT}:BleachTime~
+  - Set the value for the beaching timer, in units of ~20ns * 1024 * 1024~
 - ~${PORT}${SLOT}:BleachTime_RB~
-- ~${PORT}${SLOT}:BleachTimerEnable~
-- ~${PORT}${SLOT}:BleachTimerEnable_RB~
+  - Set the value for the beaching timer
 
+- ~${PORT}${SLOT}:BleachTimerEnable~
+  - Enable / Disable the bleaching timer
+- ~${PORT}${SLOT}:BleachTimerEnable_RB~
+  - Readback of the bleaching timer enable status
+  
 - ~${PORT}${SLOT}:${CONN}:LDOEnable~
+  - Enable / Disable of the bleaching LDO regulator 
 - ~${PORT}${SLOT}:${CONN}:LDOEnable_RB~
+  - Readback of the bleaching LDO regulator enable status
 
 - ~${PORT}${SLOT}:${CONN}:LDOCurrentSetting~
+  - Set the value for the LDO regulator setting [0, 7]
 - ~${PORT}${SLOT}:${CONN}:LDOCurrentSetting_RB~
+  - Readback of the LDO regulator setting
