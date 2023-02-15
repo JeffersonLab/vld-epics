@@ -134,6 +134,11 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 - ~${PORT}${SLOT}:PeriodicPulserPeriod_RB~
   - Readback value for the fixed pulser period
 
+- ~${PORT}${SLOT}:PeriodicPulserPeriodRange~
+  - Set value for the fixed pulser period range (0: 8ns, 1: 8.19us)
+- ~${PORT}${SLOT}:PeriodicPulserPeriodRange_RB~
+  - Readback value for the fixed pulser period range (0: 8ns, 1: 8.19us)
+    
 - ~${PORT}${SLOT}:PeriodicPulserNumber~
   - Set value for the fixed pulser number of pulses
 - ~${PORT}${SLOT}:PeriodicPulserNumber_RB~

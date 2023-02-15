@@ -453,7 +453,7 @@ record(bo, "$(P)$(R)PeriodicPulserPeriodRange") {
   field(FLNK, "$(P)$(R)PeriodicPulserPeriodRange_RB")
   field(OUT, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriodRange")
   field(ZNAM, "8ns stepsize")
-  field(ONAM, "32ns stepsize")
+  field(ONAM, "8.192us stepsize")
 }
 
 record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
@@ -463,7 +463,7 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriodRange")
   field(ZNAM, "8ns stepsize")
-  field(ONAM, "32ns stepsize")
+  field(ONAM, "8.192us stepsize")
 }
 
 #! Further lines contain data used by VisualDCT
