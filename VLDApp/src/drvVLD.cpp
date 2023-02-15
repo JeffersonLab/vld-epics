@@ -215,7 +215,7 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
     *high = 0x3F;
 
   else if(function == P_squareWaveWidth)
-    *high = 1000;
+    *high = 2048;
 
   else
     return(asynError);
@@ -773,7 +773,7 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 	  break;
 
 	case 1: // Square Wave
-	  status = vldLoadSquarePulse(id, (uint8_t) square_wave_width, (uint8_t) square_wave_amp);
+	  status = vldLoadSquarePulse(id, square_wave_width, square_wave_amp);
 	  break;
 
 	case 2: // User defined

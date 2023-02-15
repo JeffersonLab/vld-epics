@@ -439,7 +439,7 @@ record(longout, "$(P)$(R)SquareWaveAmplitude") {
 record(longout, "$(P)$(R)SquareWaveWidth") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveWidth")
-  field(DRVH, "1020")
+  field(DRVH, "2048")
   field(DRVL, "0")
 }
 
