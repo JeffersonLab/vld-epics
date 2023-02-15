@@ -43,9 +43,9 @@ record(longout, "$(P)$(R)TriggerDelay") {
   field(DESC, "Trigger Delay")
   field(SCAN, "Passive")
   field(DTYP, "asynInt32")
-  field(FLNK, "${P}${R}TriggerDelayFanout")
+  field(FLNK, "$(P)$(R)TriggerDelayFanout")
   field(OUT, "@asyn($(PORT),$(ADDR))TriggerDelay")
-  field(DOL, "${P}${R}TriggerDelayCalcout NPP NMS")
+  field(DOL, "$(P)$(R)TriggerDelayCalcout NPP NMS")
   field(OMSL, "closed_loop")
 }
 
@@ -56,7 +56,7 @@ record(bo, "$(P)$(R)TriggerDelayStep") {
   field(ZNAM, "4 nanoseconds")
   field(ONAM, "16 nanoseconds")
   field(OMSL, "closed_loop")
-  field(DOL, "${P}${R}TriggerDelayStepCalcout")
+  field(DOL, "$(P)$(R)TriggerDelayStepCalcout")
 }
 
 record(longout, "$(P)$(R)TriggerWidth") {
@@ -66,7 +66,7 @@ record(longout, "$(P)$(R)TriggerWidth") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))TriggerWidth")
   field(FLNK, "$(P)$(R)TriggerWidth_RB")
-  field(DOL, "${P}${R}TriggerWidthCalc")
+  field(DOL, "$(P)$(R)TriggerWidthCalc")
   field(OMSL, "closed_loop")
 }
 
@@ -121,7 +121,7 @@ record(longout, "$(P)$(R)RandomPulserPrescale") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))RandomPulserPrescale")
   field(FLNK, "$(P)$(R)RandomPulserPrescale_RB")
-  field(DOL, "${P}${R}RandomPulserRateSet")
+  field(DOL, "$(P)$(R)RandomPulserRateSet")
   field(OMSL, "closed_loop")
 }
 
@@ -137,7 +137,6 @@ record(bo, "$(P)$(R)RandomPulserEnable") {
   field(IVOA, "Set output to IVOV")
   field(IVOV, "0")
 }
-
 
 record(longout, "$(P)$(R)PeriodicPulserPeriod") {
   field(DESC, "Periodic Pulser Period")
@@ -180,7 +179,7 @@ record(longin, "$(P)$(R)TriggerDelay_RB") {
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))TriggerDelay")
-  field(FLNK, "${P}${R}TriggerDelayCalc")
+  field(FLNK, "$(P)$(R)TriggerDelayCalc")
 }
 
 record(bi, "$(P)$(R)TriggerDelayStep_RB") {
@@ -283,10 +282,10 @@ record(longin, "$(P)$(R)RandomPulserPrescale_RB") {
   field(PINI, "YES")
   field(DTYP, "asynInt32")
   field(INP, "@asyn($(PORT),$(ADDR))RandomPulserPrescale")
-  field(FLNK, "${P}${R}RandomPulserRate")
+  field(FLNK, "$(P)$(R)RandomPulserRate")
 }
 
-record(calc, "${P}${R}TriggerDelayCalc") {
+record(calc, "$(P)$(R)TriggerDelayCalc") {
   field(DESC, "Calculated Trigger Delay")
   field(PINI, "YES")
   field(CALC, "1024*B + (A + 1)*(4**(B+1))")
@@ -295,7 +294,7 @@ record(calc, "${P}${R}TriggerDelayCalc") {
   field(EGU, "nanoseconds")
 }
 
-record(longout, "${P}${R}TriggerDelaySet") {
+record(longout, "$(P)$(R)TriggerDelaySet") {
   field(DESC, "User Set Trigger Delay")
   field(DTYP, "Soft Channel")
   field(EGU, "nanoseconds")
@@ -306,22 +305,22 @@ record(longout, "${P}${R}TriggerDelaySet") {
   field(HSV, "INVALID")
   field(LSV, "INVALID")
   field(PINI, "YES")
-  field(FLNK, "${P}${R}TriggerDelaySetFanout")
+  field(FLNK, "$(P)$(R)TriggerDelaySetFanout")
 }
 
-record(calc, "${P}${R}TriggerDelayCalcout") {
+record(calc, "$(P)$(R)TriggerDelayCalcout") {
   field(CALC, "(A > 4) && (A <= 512) ?  (A / 4) - 1 : (A >= 1040) ? ((A - 1024) / 16 ) - 1 : 0")
-  field(INPA, "${P}${R}TriggerDelaySet")
+  field(INPA, "$(P)$(R)TriggerDelaySet")
   field(FLNK, "$(P)$(R)TriggerDelay")
 }
 
-record(calc, "${P}${R}TriggerDelayStepCalcout") {
+record(calc, "$(P)$(R)TriggerDelayStepCalcout") {
   field(CALC, "(A > 512) ? 1 : 0")
-  field(INPA, "${P}${R}TriggerDelaySet")
+  field(INPA, "$(P)$(R)TriggerDelaySet")
   field(FLNK, "$(P)$(R)TriggerDelayStep")
 }
 
-record(mbbo, "${P}${R}RandomPulserRateSet") {
+record(mbbo, "$(P)$(R)RandomPulserRateSet") {
   field(DESC, "User Set of Random Pulser Rate")
   field(DTYP, "Soft Channel")
   field(FLNK, "$(P)$(R)RandomPulserPrescale")
@@ -361,7 +360,7 @@ record(mbbo, "${P}${R}RandomPulserRateSet") {
   field(FFST, "21 Hz")
 }
 
-record(mbbi, "${P}${R}RandomPulserRate") {
+record(mbbi, "$(P)$(R)RandomPulserRate") {
   field(DESC, "Random Pulser Rate")
   field(DTYP, "Soft Channel")
   field(INP, "$(P)$(R)RandomPulserPrescale_RB")
@@ -399,19 +398,19 @@ record(mbbi, "${P}${R}RandomPulserRate") {
   field(FFST, "21 Hz")
 }
 
-record(calc, "${P}${R}TriggerWidthCalc") {
+record(calc, "$(P)$(R)TriggerWidthCalc") {
   field(DESC, "Trigger Width Calc")
-  field(INPA, "${P}${R}TriggerWidthSet")
+  field(INPA, "$(P)$(R)TriggerWidthSet")
   field(FLNK, "$(P)$(R)TriggerWidth")
   field(CALC, "(A - 4) / 4")
 }
 
-record(longout, "${P}${R}TriggerWidthSet") {
+record(longout, "$(P)$(R)TriggerWidthSet") {
   field(DESC, "Trigger Width Set")
   field(DTYP, "Soft Channel")
   field(EGU, "nanoseconds")
   field(PINI, "YES")
-  field(FLNK, "${P}${R}TriggerWidthCalc")
+  field(FLNK, "$(P)$(R)TriggerWidthCalc")
   field(HIGH, "130")
   field(LOW, "0")
   field(HSV, "INVALID")
@@ -420,29 +419,35 @@ record(longout, "${P}${R}TriggerWidthSet") {
   field(IVOV, "128")
 }
 
-record(fanout, "${P}${R}TriggerDelaySetFanout") {
-  field(LNK1, "${P}${R}TriggerDelayCalcout")
-  field(LNK2, "${P}${R}TriggerDelayStepCalcout")
+record(fanout, "$(P)$(R)TriggerDelaySetFanout") {
+  field(LNK1, "$(P)$(R)TriggerDelayCalcout")
+  field(LNK2, "$(P)$(R)TriggerDelayStepCalcout")
 }
 
-record(fanout, "${P}${R}TriggerDelayFanout") {
+record(fanout, "$(P)$(R)TriggerDelayFanout") {
   field(LNK1, "$(P)$(R)TriggerDelay_RB")
   field(LNK2, "$(P)$(R)TriggerDelayStep_RB")
 }
 
-record(longout, "${P}${R}SquareWaveAmplitude") {
+record(longout, "$(P)$(R)SquareWaveAmplitude") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveAmplitude")
+  field(DRVH, "63")
+  field(DRVL, "0")
 }
 
-record(longout, "${P}${R}SquareWaveWidth") {
+record(longout, "$(P)$(R)SquareWaveWidth") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveWidth")
+  field(DRVH, "1020")
+  field(DRVL, "0")
 }
 
-record(longout, "${P}${R}PulseWaveformType") {
+record(longout, "$(P)$(R)PulseWaveformType") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))PulseWaveformType")
+  field(DRVH, "1")
+  field(DRVL, "0")
 }
 
 record(bo, "$(P)$(R)PeriodicPulserPeriodRange") {
@@ -467,7 +472,7 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
 }
 
 #! Further lines contain data used by VisualDCT
-#! View(959,47,1.0)
+#! View(0,0,1.0)
 #! Record("$(P)$(R)FirmwareVersion",20,14,0,0,"$(P)$(R)FirmwareVersion")
 #! Record("$(P)$(R)ModuleID",260,14,0,0,"$(P)$(R)ModuleID")
 #! Record("$(P)$(R)TriggerCount",520,34,0,0,"$(P)$(R)TriggerCount")
@@ -476,17 +481,17 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
 #! Link("$(P)$(R)ClockSource.FLNK","$(P)$(R)ClockSource_RB")
 #! Record("$(P)$(R)TriggerDelay",1920,1106,16777215,0,"$(P)$(R)TriggerDelay")
 #! Field("$(P)$(R)TriggerDelay.FLNK",16777215,1,"$(P)$(R)TriggerDelay.FLNK")
-#! Link("$(P)$(R)TriggerDelay.FLNK","${P}${R}TriggerDelayFanout")
+#! Link("$(P)$(R)TriggerDelay.FLNK","$(P)$(R)TriggerDelayFanout")
 #! Field("$(P)$(R)TriggerDelay.DOL",16777215,0,"$(P)$(R)TriggerDelay.DOL")
-#! Link("$(P)$(R)TriggerDelay.DOL","${P}${R}TriggerDelayCalcout.VAL")
+#! Link("$(P)$(R)TriggerDelay.DOL","$(P)$(R)TriggerDelayCalcout.VAL")
 #! Record("$(P)$(R)TriggerDelayStep",1920,1426,0,0,"$(P)$(R)TriggerDelayStep")
 #! Field("$(P)$(R)TriggerDelayStep.DOL",16777215,0,"$(P)$(R)TriggerDelayStep.DOL")
-#! Link("$(P)$(R)TriggerDelayStep.DOL","${P}${R}TriggerDelayStepCalcout.VAL")
+#! Link("$(P)$(R)TriggerDelayStep.DOL","$(P)$(R)TriggerDelayStepCalcout.VAL")
 #! Record("$(P)$(R)TriggerWidth",2320,752,0,1,"$(P)$(R)TriggerWidth")
 #! Field("$(P)$(R)TriggerWidth.FLNK",16777215,1,"$(P)$(R)TriggerWidth.FLNK")
 #! Link("$(P)$(R)TriggerWidth.FLNK","$(P)$(R)TriggerWidth_RB")
 #! Field("$(P)$(R)TriggerWidth.DOL",16777215,0,"$(P)$(R)TriggerWidth.DOL")
-#! Link("$(P)$(R)TriggerWidth.DOL","${P}${R}TriggerWidthCalc.VAL")
+#! Link("$(P)$(R)TriggerWidth.DOL","$(P)$(R)TriggerWidthCalc.VAL")
 #! Record("$(P)$(R)TriggerSourceMask",1040,57,0,0,"$(P)$(R)TriggerSourceMask")
 #! Field("$(P)$(R)TriggerSourceMask.FLNK",16777215,1,"$(P)$(R)TriggerSourceMask.FLNK")
 #! Link("$(P)$(R)TriggerSourceMask.FLNK","$(P)$(R)TriggerSourceMask_RB")
@@ -501,7 +506,7 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
 #! Link("$(P)$(R)CalibrationPulseWidth.FLNK","$(P)$(R)CalibrationPulseWidth_RB")
 #! Record("$(P)$(R)RandomPulserPrescale",860,432,0,0,"$(P)$(R)RandomPulserPrescale")
 #! Field("$(P)$(R)RandomPulserPrescale.DOL",16777215,0,"$(P)$(R)RandomPulserPrescale.DOL")
-#! Link("$(P)$(R)RandomPulserPrescale.DOL","${P}${R}RandomPulserRateSet.VAL")
+#! Link("$(P)$(R)RandomPulserPrescale.DOL","$(P)$(R)RandomPulserRateSet.VAL")
 #! Field("$(P)$(R)RandomPulserPrescale.FLNK",16777215,1,"$(P)$(R)RandomPulserPrescale.FLNK")
 #! Link("$(P)$(R)RandomPulserPrescale.FLNK","$(P)$(R)RandomPulserPrescale_RB")
 #! Record("$(P)$(R)RandomPulserEnable",680,825,0,0,"$(P)$(R)RandomPulserEnable")
@@ -517,7 +522,7 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
 #! Record("$(P)$(R)TriggerDelay_RB",2540,1060,0,0,"$(P)$(R)TriggerDelay_RB")
 #! Field("$(P)$(R)TriggerDelay_RB.VAL",16777215,1,"$(P)$(R)TriggerDelay_RB.VAL")
 #! Field("$(P)$(R)TriggerDelay_RB.FLNK",16777215,1,"$(P)$(R)TriggerDelay_RB.FLNK")
-#! Link("$(P)$(R)TriggerDelay_RB.FLNK","${P}${R}TriggerDelayCalc")
+#! Link("$(P)$(R)TriggerDelay_RB.FLNK","$(P)$(R)TriggerDelayCalc")
 #! Record("$(P)$(R)TriggerDelayStep_RB",2540,1386,0,0,"$(P)$(R)TriggerDelayStep_RB")
 #! Field("$(P)$(R)TriggerDelayStep_RB.VAL",16777215,1,"$(P)$(R)TriggerDelayStep_RB.VAL")
 #! Record("$(P)$(R)TriggerWidth_RB",2580,805,0,0,"$(P)$(R)TriggerWidth_RB")
@@ -530,63 +535,63 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
 #! Record("$(P)$(R)PeriodicPulserNumber_RB",2060,494,0,0,"$(P)$(R)PeriodicPulserNumber_RB")
 #! Record("$(P)$(R)RandomPulserPrescale_RB",1120,460,0,0,"$(P)$(R)RandomPulserPrescale_RB")
 #! Field("$(P)$(R)RandomPulserPrescale_RB.FLNK",16777215,1,"$(P)$(R)RandomPulserPrescale_RB.FLNK")
-#! Link("$(P)$(R)RandomPulserPrescale_RB.FLNK","${P}${R}RandomPulserRate")
+#! Link("$(P)$(R)RandomPulserPrescale_RB.FLNK","$(P)$(R)RandomPulserRate")
 #! Field("$(P)$(R)RandomPulserPrescale_RB.VAL",16777215,1,"$(P)$(R)RandomPulserPrescale_RB.VAL")
-#! Record("${P}${R}TriggerDelayCalc",2840,1220,0,0,"${P}${R}TriggerDelayCalc")
-#! Field("${P}${R}TriggerDelayCalc.INPA",16777215,0,"${P}${R}TriggerDelayCalc.INPA")
-#! Link("${P}${R}TriggerDelayCalc.INPA","$(P)$(R)TriggerDelay_RB.VAL")
-#! Field("${P}${R}TriggerDelayCalc.INPB",16777215,0,"${P}${R}TriggerDelayCalc.INPB")
-#! Link("${P}${R}TriggerDelayCalc.INPB","$(P)$(R)TriggerDelayStep_RB.VAL")
-#! Record("${P}${R}TriggerDelaySet",1260,1311,0,1,"${P}${R}TriggerDelaySet")
-#! Field("${P}${R}TriggerDelaySet.VAL",16777215,1,"${P}${R}TriggerDelaySet.VAL")
-#! Field("${P}${R}TriggerDelaySet.FLNK",16777215,1,"${P}${R}TriggerDelaySet.FLNK")
-#! Link("${P}${R}TriggerDelaySet.FLNK","${P}${R}TriggerDelaySetFanout")
-#! Record("${P}${R}TriggerDelayCalcout",1620,1182,0,0,"${P}${R}TriggerDelayCalcout")
-#! Field("${P}${R}TriggerDelayCalcout.INPA",16777215,0,"${P}${R}TriggerDelayCalcout.INPA")
-#! Link("${P}${R}TriggerDelayCalcout.INPA","${P}${R}TriggerDelaySet.VAL")
-#! Field("${P}${R}TriggerDelayCalcout.VAL",16777215,1,"${P}${R}TriggerDelayCalcout.VAL")
-#! Field("${P}${R}TriggerDelayCalcout.FLNK",16777215,1,"${P}${R}TriggerDelayCalcout.FLNK")
-#! Link("${P}${R}TriggerDelayCalcout.FLNK","$(P)$(R)TriggerDelay")
-#! Record("${P}${R}TriggerDelayStepCalcout",1620,1422,0,0,"${P}${R}TriggerDelayStepCalcout")
-#! Field("${P}${R}TriggerDelayStepCalcout.INPA",16777215,0,"${P}${R}TriggerDelayStepCalcout.INPA")
-#! Link("${P}${R}TriggerDelayStepCalcout.INPA","${P}${R}TriggerDelaySet.VAL")
-#! Field("${P}${R}TriggerDelayStepCalcout.VAL",16777215,1,"${P}${R}TriggerDelayStepCalcout.VAL")
-#! Field("${P}${R}TriggerDelayStepCalcout.FLNK",16777215,1,"${P}${R}TriggerDelayStepCalcout.FLNK")
-#! Link("${P}${R}TriggerDelayStepCalcout.FLNK","$(P)$(R)TriggerDelayStep")
-#! Record("${P}${R}RandomPulserRateSet",460,190,0,1,"${P}${R}RandomPulserRateSet")
-#! Field("${P}${R}RandomPulserRateSet.VAL",16777215,1,"${P}${R}RandomPulserRateSet.VAL")
-#! Field("${P}${R}RandomPulserRateSet.FLNK",16777215,1,"${P}${R}RandomPulserRateSet.FLNK")
-#! Link("${P}${R}RandomPulserRateSet.FLNK","$(P)$(R)RandomPulserPrescale")
-#! Record("${P}${R}RandomPulserRate",1400,338,0,0,"${P}${R}RandomPulserRate")
-#! Field("${P}${R}RandomPulserRate.INP",16777215,0,"${P}${R}RandomPulserRate.INP")
-#! Link("${P}${R}RandomPulserRate.INP","$(P)$(R)RandomPulserPrescale_RB.VAL")
-#! Record("${P}${R}TriggerWidthCalc",2100,808,0,0,"${P}${R}TriggerWidthCalc")
-#! Field("${P}${R}TriggerWidthCalc.INPA",16777215,0,"${P}${R}TriggerWidthCalc.INPA")
-#! Link("${P}${R}TriggerWidthCalc.INPA","${P}${R}TriggerWidthSet.VAL")
-#! Field("${P}${R}TriggerWidthCalc.VAL",16777215,0,"${P}${R}TriggerWidthCalc.VAL")
-#! Field("${P}${R}TriggerWidthCalc.FLNK",16777215,1,"${P}${R}TriggerWidthCalc.FLNK")
-#! Link("${P}${R}TriggerWidthCalc.FLNK","$(P)$(R)TriggerWidth")
-#! Record("${P}${R}TriggerWidthSet",1820,731,0,1,"${P}${R}TriggerWidthSet")
-#! Field("${P}${R}TriggerWidthSet.VAL",16777215,1,"${P}${R}TriggerWidthSet.VAL")
-#! Field("${P}${R}TriggerWidthSet.FLNK",16777215,1,"${P}${R}TriggerWidthSet.FLNK")
-#! Link("${P}${R}TriggerWidthSet.FLNK","${P}${R}TriggerWidthCalc")
-#! Record("${P}${R}TriggerDelaySetFanout",1320,1136,0,1,"${P}${R}TriggerDelaySetFanout")
-#! Field("${P}${R}TriggerDelaySetFanout.LNK1",16777215,1,"${P}${R}TriggerDelaySetFanout.LNK1")
-#! Link("${P}${R}TriggerDelaySetFanout.LNK1","${P}${R}TriggerDelayCalcout")
-#! Field("${P}${R}TriggerDelaySetFanout.LNK2",16777215,1,"${P}${R}TriggerDelaySetFanout.LNK2")
-#! Link("${P}${R}TriggerDelaySetFanout.LNK2","${P}${R}TriggerDelayStepCalcout")
-#! Record("${P}${R}TriggerDelayFanout",2220,1236,0,0,"${P}${R}TriggerDelayFanout")
-#! Field("${P}${R}TriggerDelayFanout.LNK1",16777215,1,"${P}${R}TriggerDelayFanout.LNK1")
-#! Link("${P}${R}TriggerDelayFanout.LNK1","$(P)$(R)TriggerDelay_RB")
-#! Field("${P}${R}TriggerDelayFanout.LNK2",16777215,1,"${P}${R}TriggerDelayFanout.LNK2")
-#! Link("${P}${R}TriggerDelayFanout.LNK2","$(P)$(R)TriggerDelayStep_RB")
-#! Record("${P}${R}SquareWaveAmplitude",160,1476,0,1,"${P}${R}SquareWaveAmplitude")
-#! Record("${P}${R}SquareWaveWidth",160,1616,0,1,"${P}${R}SquareWaveWidth")
-#! Record("${P}${R}PulseWaveformType",400,1516,0,1,"${P}${R}PulseWaveformType")
-#! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
-#! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
-#! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
+#! Record("$(P)$(R)TriggerDelayCalc",2840,1220,0,0,"$(P)$(R)TriggerDelayCalc")
+#! Field("$(P)$(R)TriggerDelayCalc.INPA",16777215,0,"$(P)$(R)TriggerDelayCalc.INPA")
+#! Link("$(P)$(R)TriggerDelayCalc.INPA","$(P)$(R)TriggerDelay_RB.VAL")
+#! Field("$(P)$(R)TriggerDelayCalc.INPB",16777215,0,"$(P)$(R)TriggerDelayCalc.INPB")
+#! Link("$(P)$(R)TriggerDelayCalc.INPB","$(P)$(R)TriggerDelayStep_RB.VAL")
+#! Record("$(P)$(R)TriggerDelaySet",1260,1311,0,1,"$(P)$(R)TriggerDelaySet")
+#! Field("$(P)$(R)TriggerDelaySet.VAL",16777215,1,"$(P)$(R)TriggerDelaySet.VAL")
+#! Field("$(P)$(R)TriggerDelaySet.FLNK",16777215,1,"$(P)$(R)TriggerDelaySet.FLNK")
+#! Link("$(P)$(R)TriggerDelaySet.FLNK","$(P)$(R)TriggerDelaySetFanout")
+#! Record("$(P)$(R)TriggerDelayCalcout",1620,1182,0,0,"$(P)$(R)TriggerDelayCalcout")
+#! Field("$(P)$(R)TriggerDelayCalcout.INPA",16777215,0,"$(P)$(R)TriggerDelayCalcout.INPA")
+#! Link("$(P)$(R)TriggerDelayCalcout.INPA","$(P)$(R)TriggerDelaySet.VAL")
+#! Field("$(P)$(R)TriggerDelayCalcout.VAL",16777215,1,"$(P)$(R)TriggerDelayCalcout.VAL")
+#! Field("$(P)$(R)TriggerDelayCalcout.FLNK",16777215,1,"$(P)$(R)TriggerDelayCalcout.FLNK")
+#! Link("$(P)$(R)TriggerDelayCalcout.FLNK","$(P)$(R)TriggerDelay")
+#! Record("$(P)$(R)TriggerDelayStepCalcout",1620,1422,0,0,"$(P)$(R)TriggerDelayStepCalcout")
+#! Field("$(P)$(R)TriggerDelayStepCalcout.INPA",16777215,0,"$(P)$(R)TriggerDelayStepCalcout.INPA")
+#! Link("$(P)$(R)TriggerDelayStepCalcout.INPA","$(P)$(R)TriggerDelaySet.VAL")
+#! Field("$(P)$(R)TriggerDelayStepCalcout.VAL",16777215,1,"$(P)$(R)TriggerDelayStepCalcout.VAL")
+#! Field("$(P)$(R)TriggerDelayStepCalcout.FLNK",16777215,1,"$(P)$(R)TriggerDelayStepCalcout.FLNK")
+#! Link("$(P)$(R)TriggerDelayStepCalcout.FLNK","$(P)$(R)TriggerDelayStep")
+#! Record("$(P)$(R)RandomPulserRateSet",460,190,0,1,"$(P)$(R)RandomPulserRateSet")
+#! Field("$(P)$(R)RandomPulserRateSet.VAL",16777215,1,"$(P)$(R)RandomPulserRateSet.VAL")
+#! Field("$(P)$(R)RandomPulserRateSet.FLNK",16777215,1,"$(P)$(R)RandomPulserRateSet.FLNK")
+#! Link("$(P)$(R)RandomPulserRateSet.FLNK","$(P)$(R)RandomPulserPrescale")
+#! Record("$(P)$(R)RandomPulserRate",1400,338,0,0,"$(P)$(R)RandomPulserRate")
+#! Field("$(P)$(R)RandomPulserRate.INP",16777215,0,"$(P)$(R)RandomPulserRate.INP")
+#! Link("$(P)$(R)RandomPulserRate.INP","$(P)$(R)RandomPulserPrescale_RB.VAL")
+#! Record("$(P)$(R)TriggerWidthCalc",2100,808,0,0,"$(P)$(R)TriggerWidthCalc")
+#! Field("$(P)$(R)TriggerWidthCalc.INPA",16777215,0,"$(P)$(R)TriggerWidthCalc.INPA")
+#! Link("$(P)$(R)TriggerWidthCalc.INPA","$(P)$(R)TriggerWidthSet.VAL")
+#! Field("$(P)$(R)TriggerWidthCalc.VAL",16777215,0,"$(P)$(R)TriggerWidthCalc.VAL")
+#! Field("$(P)$(R)TriggerWidthCalc.FLNK",16777215,1,"$(P)$(R)TriggerWidthCalc.FLNK")
+#! Link("$(P)$(R)TriggerWidthCalc.FLNK","$(P)$(R)TriggerWidth")
+#! Record("$(P)$(R)TriggerWidthSet",1820,731,0,1,"$(P)$(R)TriggerWidthSet")
+#! Field("$(P)$(R)TriggerWidthSet.VAL",16777215,1,"$(P)$(R)TriggerWidthSet.VAL")
+#! Field("$(P)$(R)TriggerWidthSet.FLNK",16777215,1,"$(P)$(R)TriggerWidthSet.FLNK")
+#! Link("$(P)$(R)TriggerWidthSet.FLNK","$(P)$(R)TriggerWidthCalc")
+#! Record("$(P)$(R)TriggerDelaySetFanout",1320,1136,0,1,"$(P)$(R)TriggerDelaySetFanout")
+#! Field("$(P)$(R)TriggerDelaySetFanout.LNK1",16777215,1,"$(P)$(R)TriggerDelaySetFanout.LNK1")
+#! Link("$(P)$(R)TriggerDelaySetFanout.LNK1","$(P)$(R)TriggerDelayCalcout")
+#! Field("$(P)$(R)TriggerDelaySetFanout.LNK2",16777215,1,"$(P)$(R)TriggerDelaySetFanout.LNK2")
+#! Link("$(P)$(R)TriggerDelaySetFanout.LNK2","$(P)$(R)TriggerDelayStepCalcout")
+#! Record("$(P)$(R)TriggerDelayFanout",2220,1236,0,0,"$(P)$(R)TriggerDelayFanout")
+#! Field("$(P)$(R)TriggerDelayFanout.LNK1",16777215,1,"$(P)$(R)TriggerDelayFanout.LNK1")
+#! Link("$(P)$(R)TriggerDelayFanout.LNK1","$(P)$(R)TriggerDelay_RB")
+#! Field("$(P)$(R)TriggerDelayFanout.LNK2",16777215,1,"$(P)$(R)TriggerDelayFanout.LNK2")
+#! Link("$(P)$(R)TriggerDelayFanout.LNK2","$(P)$(R)TriggerDelayStep_RB")
+#! Record("$(P)$(R)SquareWaveAmplitude",160,1448,0,1,"$(P)$(R)SquareWaveAmplitude")
+#! Record("$(P)$(R)SquareWaveWidth",160,1588,0,1,"$(P)$(R)SquareWaveWidth")
+#! Record("$(P)$(R)PulseWaveformType",400,1488,0,1,"$(P)$(R)PulseWaveformType")
 #! Record("$(P)$(R)PeriodicPulserPeriodRange",1800,252,0,1,"$(P)$(R)PeriodicPulserPeriodRange")
 #! Field("$(P)$(R)PeriodicPulserPeriodRange.FLNK",16777215,1,"$(P)$(R)PeriodicPulserPeriodRange.FLNK")
 #! Link("$(P)$(R)PeriodicPulserPeriodRange.FLNK","$(P)$(R)PeriodicPulserPeriodRange_RB")
 #! Record("$(P)$(R)PeriodicPulserPeriodRange_RB",2060,266,0,0,"$(P)$(R)PeriodicPulserPeriodRange_RB")
+#! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
+#! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
+#! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
