@@ -66,6 +66,7 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   createParam(randomPulserEnableString, asynParamInt32, &P_randomPulserEnable);
 
   createParam(periodicPulserPeriodString, asynParamInt32, &P_periodicPulserPeriod);
+  createParam(periodicPulserPeriodRangeString, asynParamInt32, &P_periodicPulserPeriodRange);
   createParam(periodicPulserNumberString, asynParamInt32, &P_periodicPulserNumber);
 
   createParam(triggerCountString, asynParamInt32, &P_triggerCount);
@@ -199,7 +200,10 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
     *high = 0x1;
 
   else if(function == P_periodicPulserPeriod)
-    *high = 0xffff;
+    *high = 0x7fff;
+
+  else if(function == P_periodicPulserPeriodRange)
+    *high = 0x1;
 
   else if(function == P_periodicPulserNumber)
     *high = 0xffff;
@@ -426,18 +430,21 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
 
     }
 
-  else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserNumber))
+  else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserPeriodRange) || (function == P_periodicPulserNumber))
     {
-      uint32_t period = 0, number = 0;
+      uint32_t period = 0, period_range = 0, number = 0;
       vmeBusLock();
-      status = vldGetPeriodicPulser(id, &period, &number);
+      status = vldGetPeriodicPulser(id, &period, &period_range, &number);
       vmeBusUnlock();
 
       setIntegerParam(addr, P_periodicPulserPeriod, period);
+      setIntegerParam(addr, P_periodicPulserPeriodRange, period_range);
       setIntegerParam(addr, P_periodicPulserNumber, number);
 
       if (function == P_periodicPulserPeriod)
 	*value = period;
+      else if (function == P_periodicPulserPeriodRange)
+	*value = period_range;
       else if (function == P_periodicPulserNumber)
 	*value = number;
 
@@ -728,20 +735,23 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
     }
 
-  else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserNumber))
+  else if ((function == P_periodicPulserPeriod) || (function == P_periodicPulserPeriodRange) || (function == P_periodicPulserNumber))
     {
-      uint32_t period = 0, number = 0;
+      uint32_t period = 0, period_range = 0, number = 0;
 
       getIntegerParam(addr, P_periodicPulserPeriod, (epicsInt32 *)&period);
+      getIntegerParam(addr, P_periodicPulserPeriodRange, (epicsInt32 *)&period_range);
       getIntegerParam(addr, P_periodicPulserNumber, (epicsInt32 *)&number);
 
       if (function == P_periodicPulserPeriod)
 	period = value;
+      else if (function == P_periodicPulserPeriodRange)
+	period_range = value;
       else if (function == P_periodicPulserNumber)
 	number = value;
 
       vmeBusLock();
-      status = vldSetPeriodicPulser(id, period, number);
+      status = vldSetPeriodicPulser(id, period, period_range, number);
       vmeBusUnlock();
 
     }

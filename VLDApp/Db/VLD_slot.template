@@ -138,6 +138,7 @@ record(bo, "$(P)$(R)RandomPulserEnable") {
   field(IVOV, "0")
 }
 
+
 record(longout, "$(P)$(R)PeriodicPulserPeriod") {
   field(DESC, "Periodic Pulser Period")
   field(SCAN, "Passive")
@@ -146,6 +147,8 @@ record(longout, "$(P)$(R)PeriodicPulserPeriod") {
   field(FLNK, "$(P)$(R)PeriodicPulserPeriod_RB")
   field(OUT, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriod")
   field(EGU, "nanoseconds")
+  field(DRVH, "32767")
+  field(DRVL, "0")
 }
 
 record(longout, "$(P)$(R)PeriodicPulserNumber") {
@@ -155,6 +158,8 @@ record(longout, "$(P)$(R)PeriodicPulserNumber") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))PeriodicPulserNumber")
   field(FLNK, "$(P)$(R)PeriodicPulserNumber_RB")
+  field(DRVH, "65535")
+  field(DRVL, "0")
 }
 
 record(mbbi, "$(P)$(R)ClockSource_RB") {
@@ -430,7 +435,6 @@ record(longout, "${P}${R}SquareWaveAmplitude") {
   field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveAmplitude")
 }
 
-
 record(longout, "${P}${R}SquareWaveWidth") {
   field(DTYP, "asynInt32")
   field(OUT, "@asyn($(PORT),$(ADDR))SquareWaveWidth")
@@ -441,8 +445,29 @@ record(longout, "${P}${R}PulseWaveformType") {
   field(OUT, "@asyn($(PORT),$(ADDR))PulseWaveformType")
 }
 
+record(bo, "$(P)$(R)PeriodicPulserPeriodRange") {
+  field(DESC, "Periodic Pulser Period Range")
+  field(SCAN, "Passive")
+  field(PINI, "NO")
+  field(DTYP, "asynInt32")
+  field(FLNK, "$(P)$(R)PeriodicPulserPeriodRange_RB")
+  field(OUT, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriodRange")
+  field(ZNAM, "8ns stepsize")
+  field(ONAM, "32ns stepsize")
+}
+
+record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
+  field(DESC, "Periodic Pulser Period Range")
+  field(SCAN, "2 second")
+  field(PINI, "YES")
+  field(DTYP, "asynInt32")
+  field(INP, "@asyn($(PORT),$(ADDR))PeriodicPulserPeriodRange")
+  field(ZNAM, "8ns stepsize")
+  field(ONAM, "32ns stepsize")
+}
+
 #! Further lines contain data used by VisualDCT
-#! View(0,1269,1.0)
+#! View(959,47,1.0)
 #! Record("$(P)$(R)FirmwareVersion",20,14,0,0,"$(P)$(R)FirmwareVersion")
 #! Record("$(P)$(R)ModuleID",260,14,0,0,"$(P)$(R)ModuleID")
 #! Record("$(P)$(R)TriggerCount",520,34,0,0,"$(P)$(R)TriggerCount")
@@ -457,7 +482,7 @@ record(longout, "${P}${R}PulseWaveformType") {
 #! Record("$(P)$(R)TriggerDelayStep",1920,1426,0,0,"$(P)$(R)TriggerDelayStep")
 #! Field("$(P)$(R)TriggerDelayStep.DOL",16777215,0,"$(P)$(R)TriggerDelayStep.DOL")
 #! Link("$(P)$(R)TriggerDelayStep.DOL","${P}${R}TriggerDelayStepCalcout.VAL")
-#! Record("$(P)$(R)TriggerWidth",2160,612,0,1,"$(P)$(R)TriggerWidth")
+#! Record("$(P)$(R)TriggerWidth",2320,752,0,1,"$(P)$(R)TriggerWidth")
 #! Field("$(P)$(R)TriggerWidth.FLNK",16777215,1,"$(P)$(R)TriggerWidth.FLNK")
 #! Link("$(P)$(R)TriggerWidth.FLNK","$(P)$(R)TriggerWidth_RB")
 #! Field("$(P)$(R)TriggerWidth.DOL",16777215,0,"$(P)$(R)TriggerWidth.DOL")
@@ -482,10 +507,10 @@ record(longout, "${P}${R}PulseWaveformType") {
 #! Record("$(P)$(R)RandomPulserEnable",680,825,0,0,"$(P)$(R)RandomPulserEnable")
 #! Field("$(P)$(R)RandomPulserEnable.FLNK",16777215,1,"$(P)$(R)RandomPulserEnable.FLNK")
 #! Link("$(P)$(R)RandomPulserEnable.FLNK","$(P)$(R)RandomPulserEnable_RB")
-#! Record("$(P)$(R)PeriodicPulserPeriod",1800,66,0,0,"$(P)$(R)PeriodicPulserPeriod")
+#! Record("$(P)$(R)PeriodicPulserPeriod",1800,39,0,0,"$(P)$(R)PeriodicPulserPeriod")
 #! Field("$(P)$(R)PeriodicPulserPeriod.FLNK",16777215,1,"$(P)$(R)PeriodicPulserPeriod.FLNK")
 #! Link("$(P)$(R)PeriodicPulserPeriod.FLNK","$(P)$(R)PeriodicPulserPeriod_RB")
-#! Record("$(P)$(R)PeriodicPulserNumber",1800,300,0,0,"$(P)$(R)PeriodicPulserNumber")
+#! Record("$(P)$(R)PeriodicPulserNumber",1760,452,0,0,"$(P)$(R)PeriodicPulserNumber")
 #! Field("$(P)$(R)PeriodicPulserNumber.FLNK",16777215,1,"$(P)$(R)PeriodicPulserNumber.FLNK")
 #! Link("$(P)$(R)PeriodicPulserNumber.FLNK","$(P)$(R)PeriodicPulserNumber_RB")
 #! Record("$(P)$(R)ClockSource_RB",720,1179,0,0,"$(P)$(R)ClockSource_RB")
@@ -495,14 +520,14 @@ record(longout, "${P}${R}PulseWaveformType") {
 #! Link("$(P)$(R)TriggerDelay_RB.FLNK","${P}${R}TriggerDelayCalc")
 #! Record("$(P)$(R)TriggerDelayStep_RB",2540,1386,0,0,"$(P)$(R)TriggerDelayStep_RB")
 #! Field("$(P)$(R)TriggerDelayStep_RB.VAL",16777215,1,"$(P)$(R)TriggerDelayStep_RB.VAL")
-#! Record("$(P)$(R)TriggerWidth_RB",2420,665,0,0,"$(P)$(R)TriggerWidth_RB")
+#! Record("$(P)$(R)TriggerWidth_RB",2580,805,0,0,"$(P)$(R)TriggerWidth_RB")
 #! Record("$(P)$(R)TriggerSourceMask_RB",1300,71,0,0,"$(P)$(R)TriggerSourceMask_RB")
 #! Record("$(P)$(R)BleachTime_RB",3400,392,0,0,"$(P)$(R)BleachTime_RB")
 #! Record("$(P)$(R)BleachTimerEnable_RB",3420,686,0,0,"$(P)$(R)BleachTimerEnable_RB")
 #! Record("$(P)$(R)CalibrationPulseWidth_RB",2780,154,0,0,"$(P)$(R)CalibrationPulseWidth_RB")
 #! Record("$(P)$(R)RandomPulserEnable_RB",960,786,0,0,"$(P)$(R)RandomPulserEnable_RB")
 #! Record("$(P)$(R)PeriodicPulserPeriod_RB",2060,46,0,0,"$(P)$(R)PeriodicPulserPeriod_RB")
-#! Record("$(P)$(R)PeriodicPulserNumber_RB",2100,314,0,0,"$(P)$(R)PeriodicPulserNumber_RB")
+#! Record("$(P)$(R)PeriodicPulserNumber_RB",2060,494,0,0,"$(P)$(R)PeriodicPulserNumber_RB")
 #! Record("$(P)$(R)RandomPulserPrescale_RB",1120,460,0,0,"$(P)$(R)RandomPulserPrescale_RB")
 #! Field("$(P)$(R)RandomPulserPrescale_RB.FLNK",16777215,1,"$(P)$(R)RandomPulserPrescale_RB.FLNK")
 #! Link("$(P)$(R)RandomPulserPrescale_RB.FLNK","${P}${R}RandomPulserRate")
@@ -535,13 +560,13 @@ record(longout, "${P}${R}PulseWaveformType") {
 #! Record("${P}${R}RandomPulserRate",1400,338,0,0,"${P}${R}RandomPulserRate")
 #! Field("${P}${R}RandomPulserRate.INP",16777215,0,"${P}${R}RandomPulserRate.INP")
 #! Link("${P}${R}RandomPulserRate.INP","$(P)$(R)RandomPulserPrescale_RB.VAL")
-#! Record("${P}${R}TriggerWidthCalc",1940,668,0,0,"${P}${R}TriggerWidthCalc")
+#! Record("${P}${R}TriggerWidthCalc",2100,808,0,0,"${P}${R}TriggerWidthCalc")
 #! Field("${P}${R}TriggerWidthCalc.INPA",16777215,0,"${P}${R}TriggerWidthCalc.INPA")
 #! Link("${P}${R}TriggerWidthCalc.INPA","${P}${R}TriggerWidthSet.VAL")
 #! Field("${P}${R}TriggerWidthCalc.VAL",16777215,0,"${P}${R}TriggerWidthCalc.VAL")
 #! Field("${P}${R}TriggerWidthCalc.FLNK",16777215,1,"${P}${R}TriggerWidthCalc.FLNK")
 #! Link("${P}${R}TriggerWidthCalc.FLNK","$(P)$(R)TriggerWidth")
-#! Record("${P}${R}TriggerWidthSet",1660,591,0,1,"${P}${R}TriggerWidthSet")
+#! Record("${P}${R}TriggerWidthSet",1820,731,0,1,"${P}${R}TriggerWidthSet")
 #! Field("${P}${R}TriggerWidthSet.VAL",16777215,1,"${P}${R}TriggerWidthSet.VAL")
 #! Field("${P}${R}TriggerWidthSet.FLNK",16777215,1,"${P}${R}TriggerWidthSet.FLNK")
 #! Link("${P}${R}TriggerWidthSet.FLNK","${P}${R}TriggerWidthCalc")
@@ -555,9 +580,13 @@ record(longout, "${P}${R}PulseWaveformType") {
 #! Link("${P}${R}TriggerDelayFanout.LNK1","$(P)$(R)TriggerDelay_RB")
 #! Field("${P}${R}TriggerDelayFanout.LNK2",16777215,1,"${P}${R}TriggerDelayFanout.LNK2")
 #! Link("${P}${R}TriggerDelayFanout.LNK2","$(P)$(R)TriggerDelayStep_RB")
-#! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
-#! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
-#! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
 #! Record("${P}${R}SquareWaveAmplitude",160,1476,0,1,"${P}${R}SquareWaveAmplitude")
 #! Record("${P}${R}SquareWaveWidth",160,1616,0,1,"${P}${R}SquareWaveWidth")
 #! Record("${P}${R}PulseWaveformType",400,1516,0,1,"${P}${R}PulseWaveformType")
+#! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
+#! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
+#! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
+#! Record("$(P)$(R)PeriodicPulserPeriodRange",1800,252,0,1,"$(P)$(R)PeriodicPulserPeriodRange")
+#! Field("$(P)$(R)PeriodicPulserPeriodRange.FLNK",16777215,1,"$(P)$(R)PeriodicPulserPeriodRange.FLNK")
+#! Link("$(P)$(R)PeriodicPulserPeriodRange.FLNK","$(P)$(R)PeriodicPulserPeriodRange_RB")
+#! Record("$(P)$(R)PeriodicPulserPeriodRange_RB",2060,266,0,0,"$(P)$(R)PeriodicPulserPeriodRange_RB")

@@ -44,6 +44,7 @@ static const char *driverName = "VLD";
 #define randomPulserEnableString   "RandomPulserEnable"   /* asynInt32 r/w */
 
 #define periodicPulserPeriodString "PeriodicPulserPeriod" /* asynInt32 r/w */
+#define periodicPulserPeriodRangeString "PeriodicPulserPeriodRange" /* asynInt32 r/w */
 #define periodicPulserNumberString "PeriodicPulserNumber" /* asynInt32 r/w */
 
 #define triggerCountString "TriggerCount" /* asynInt32 r/o */
@@ -102,6 +103,7 @@ protected:
   int32_t P_randomPulserEnable;
 
   int32_t P_periodicPulserPeriod;
+  int32_t P_periodicPulserPeriodRange;
   int32_t P_periodicPulserNumber;
 
   int32_t P_triggerCount;
