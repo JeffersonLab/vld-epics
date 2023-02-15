@@ -24,9 +24,9 @@ VLDSLOT="vme4VLD17"
 PULSER_SETTING=15
 
 # Trigger Source
-#   0: always high (should be Periodic trigger),
-#   1: random trigger only
-#   2: FP_trigger
+#   0: always high (should be Periodic trigger), this is for fixed period
+#   1: random trigger only; average frequency (meaning the period can vary betwen +/- something)
+#   2: FP_trigger (external trigger plugged in at "IN" front pannel)
 TRIG_SOURCE=1
 
 # Connector Channel Enable Masks
