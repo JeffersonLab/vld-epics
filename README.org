@@ -89,13 +89,13 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
   - mbbo: Set source of calibration pulse
     - 0: Periodic Pulser
     - 1: Random Pulser
-    - 12: Front Panel LEMO
+    - 2: Front Panel LEMO
     
 - ~${PORT}${SLOT}:TriggerSourceMask_RB~
   - mbbo: Readback of calibration pulse source
     - 0: Periodic Pulser
     - 1: Random Pulser
-    - 12: Front Panel LEMO
+    - 2: Front Panel LEMO
 
 *** Calibration Pulse Mode
 - ~${PORT}${SLOT}:TriggerCount~
