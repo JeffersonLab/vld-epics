@@ -101,6 +101,14 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 - ~${PORT}${SLOT}:TriggerCount~
   - Readback of number of calibration pulses received (or generated)
 
+**** Waveform
+- ~${PORT}${SLOT}:PulseWaveformType~
+  - Select example trapezoidal (0) or square (1) waveform
+- ~${PORT}${SLOT}:SquareWaveAmplitude~
+  - Set amplitude of square waveform (max DAC = 63)
+- ~${PORT}${SLOT}:SquareWaveWidth~
+  - Set the width [2ns] of the square waveform (max = 2048), 
+
 **** Connector - channel enable masks
 
 - ~${PORT}${SLOT}:${CONN}:LowChannelMask~
