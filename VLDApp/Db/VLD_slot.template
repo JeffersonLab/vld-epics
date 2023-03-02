@@ -471,8 +471,14 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
   field(ONAM, "8.192us stepsize")
 }
 
+record(bo, "$(P)$(R)Reset") {
+  field(DESC, "Reset VLD to powerup values")
+  field(DTYP, "asynInt32")
+  field(OUT, "@asyn($(PORT),$(ADDR))Reset")
+}
+
 #! Further lines contain data used by VisualDCT
-#! View(0,0,1.0)
+#! View(35,997,1.0)
 #! Record("$(P)$(R)FirmwareVersion",20,14,0,0,"$(P)$(R)FirmwareVersion")
 #! Record("$(P)$(R)ModuleID",260,14,0,0,"$(P)$(R)ModuleID")
 #! Record("$(P)$(R)TriggerCount",520,34,0,0,"$(P)$(R)TriggerCount")
@@ -595,3 +601,4 @@ record(bi, "$(P)$(R)PeriodicPulserPeriodRange_RB") {
 #! TextBox(TB0,1580,980,1720,1000,0,"Dialog",12,1,16777215,"Trigger Delay",null)
 #! TextBox(TB2,920,380,1060,420,0,"Dialog",12,1,16777215,"Random Pulser",null)
 #! TextBox(TB1,580,1100,760,1180,0,"Dialog",12,1,16777215,"Clock Source",null)
+#! Record("$(P)$(R)Reset",700,1522,0,1,"$(P)$(R)Reset")

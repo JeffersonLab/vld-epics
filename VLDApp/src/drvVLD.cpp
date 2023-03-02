@@ -74,8 +74,10 @@ VLD::VLD(const char* portName, uint32_t vme_addr, uint32_t vme_incr, uint32_t ni
   createParam(pulseWaveformTypeString, asynParamInt32, &P_pulseWaveformType);
   createParam(pulseWaveformString, asynParamInt32Array, &P_pulseWaveform);
 
-  createParam(squareWaveAmplitude, asynParamInt32, &P_squareWaveAmplitude);
-  createParam(squareWaveWidth, asynParamInt32, &P_squareWaveWidth);
+  createParam(squareWaveAmplitudeString, asynParamInt32, &P_squareWaveAmplitude);
+  createParam(squareWaveWidthString, asynParamInt32, &P_squareWaveWidth);
+
+  createParam(resetString, asynParamInt32, &P_reset);
 
   vld_ActiveMask = 0;
 
@@ -216,6 +218,9 @@ VLD::getBounds(asynUser *pasynUser, epicsInt32 *low, epicsInt32 *high)
 
   else if(function == P_squareWaveWidth)
     *high = 2048;
+
+  else if(function == P_reset)
+    *high = 1;
 
   else
     return(asynError);
@@ -475,6 +480,13 @@ VLD::readInt32(asynUser *pasynUser, epicsInt32 *value)
   else if (function == P_pulseWaveformType)
     {
       // Just return the previously written value
+      status = 0;
+    }
+
+  else if (function == P_reset)
+    {
+      // w/o readback always zero
+      *value = 0;
       status = 0;
     }
 
@@ -783,6 +795,17 @@ VLD::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
       vmeBusUnlock();
 
+    }
+
+  else if (function == P_reset)
+    {
+      // ignore if 0
+      if(value > 0)
+	{
+	  vmeBusLock();
+	  vldSoftReset(id);
+	  vmeBusUnlock();
+	}
     }
   else
     {

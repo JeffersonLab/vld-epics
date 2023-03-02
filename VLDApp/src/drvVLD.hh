@@ -53,9 +53,10 @@ static const char *driverName = "VLD";
 
 #define pulseWaveformString "PulseWaveform" /* asynInt32Array r/w */
 
-#define squareWaveAmplitude "SquareWaveAmplitude" /* asynInt32 w/o */
-#define squareWaveWidth "SquareWaveWidth" /* asynInt32 w/o */
+#define squareWaveAmplitudeString "SquareWaveAmplitude" /* asynInt32 w/o */
+#define squareWaveWidthString "SquareWaveWidth" /* asynInt32 w/o */
 
+#define resetString "Reset" /* asynInt32 w/o  */
 
 #define MAX_SIGNALS 40
 
@@ -113,6 +114,8 @@ protected:
 
   int32_t P_squareWaveAmplitude;
   int32_t P_squareWaveWidth;
+
+  int32_t P_reset;
 
 private:
   int32_t P_boardNum;

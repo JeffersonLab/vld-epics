@@ -77,6 +77,9 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
 - ~${PORT}${SLOT}:FirmwareVersion~
   - Firmware Version of the VLD
 
+- ~${PORT}${SLOT}:Reset~
+  - Soft Reset of VLD to power-up values
+
 - ~${PORT}${SLOT}:ClockSource~
   - Set source of 250MHz clock.
     - 0: internal
@@ -128,7 +131,7 @@ EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
     ...
     - 15: 21Hz
 - ~${PORT}${SLOT}:RandomPulserRate~
-  - mbbo: Readback of current random pulser rate
+  - mbbi: Readback of current random pulser rate
    
 - ~${PORT}${SLOT}:RandomPulserEnable~
   - Enable / Disable the random pulser
