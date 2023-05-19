@@ -1,0 +1,25 @@
+file "${TOP}/db/VLD_crate.template"
+{
+pattern
+{ R,	ADDR}
+{ VLD20:, 20}
+}
+
+
+file "${TOP}/db/VLD_slot.template"
+{
+pattern
+{ R,	ADDR}
+{ VLD20:, 20}
+}
+
+file "${TOP}/db/VLD_connector.template"
+{
+pattern
+{ R,   ADDR,   CONN}
+{ VLD20:, 20,  0}
+{ VLD20:, 20,  1}
+{ VLD20:, 20,  2}
+{ VLD20:, 20,  3}
+{ VLD20:, 20,  4}
+}
