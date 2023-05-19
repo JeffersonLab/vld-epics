@@ -6,7 +6,7 @@
 #
 
 # VLD Slot to use
-VLDSLOT="vme4VLD14"
+VLDSLOT="vme4VLD13"
 
 # Bleach Time units [20ns * 1024 * 1024], 43980 is about 925 seconds
 BLEACH_TIME=43980

@@ -14,7 +14,14 @@
 ###########
 
 # VLD Slot to use
-VLDSLOT="vme4VLD17"
+#VLDSLOT="vme4VLD17"
+#VLDSLOT="vme4VLD16"
+#VLDSLOT="vme4VLD15"
+#VLDSLOT="vme4VLD18"
+VLDSLOT="vme4VLD13"
+#VLDSLOT="vme4VLD19"
+#VLDSLOT="vme4VLD20"
+#VLDSLOT="vme4VLD14"
 
 # Periodic Pulser Period
 #    period = PULSER_PERIOD * PULSER_PERIOD_RANGE
