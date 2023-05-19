@@ -27,8 +27,8 @@ VLD_LIBS += asyn
 # Finally include the libraries from base
 VLD_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-VLD_LDFLAGS += -L$(LINUXVME_LIB) -ljvme -lvld
-USR_INCLUDES += -I$(LINUXVME_INC)
+VLD_LDFLAGS += -L$(LINUXVME_LIB) -L$(CODA_VME_LIB) -ljvme -lvld
+USR_INCLUDES += -I$(LINUXVME_INC) -I$(CODA_VME)/include
 
 
 include $(TOP)/configure/RULES

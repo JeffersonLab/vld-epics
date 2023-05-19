@@ -1,0 +1,22 @@
+#!../../bin/linux-x86_64/VLD
+
+
+< envPaths
+
+epicsEnvSet("PORT", "vme2")
+
+cd "${TOP}"
+
+## Register all support components
+dbLoadDatabase "dbd/VLD.dbd"
+VLD_registerRecordDeviceDriver pdbbase
+
+VLDConfig("$(PORT)",0xa00000,0x080000,1,0);
+
+## Load record instances
+dbLoadTemplate("$(TOP)/db/VLD-$(PORT).substitutions","P=$(PORT),PORT=$(PORT)")
+
+#asynSetTraceMask("$(PORT)", 17, ASYN_TRACE_DRIVER)
+
+cd "${TOP}/iocBoot/${IOC}"
+iocInit

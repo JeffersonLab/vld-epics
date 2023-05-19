@@ -1,9 +1,9 @@
 # RELEASE - Location of external support modules
 
-ASYN = /daqfs/apps/epics/R3-15-git/support/asyn
+ASYN = ${HOME}/nps-vme/EPICS/R3-15-9/support/asyn
 
 # EPICS_BASE should appear last so earlier modules can override stuff:
-EPICS_BASE = /daqfs/apps/epics/R3-15-git/base
+EPICS_BASE = ${HOME}/nps-vme/EPICS/R3-15-9/base
 
 # These allow developers to override the RELEASE variable settings
 # without having to modify the configure/RELEASE file itself.
